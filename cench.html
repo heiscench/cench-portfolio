@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cench — Web Designer & Frontend Creator</title>
+
+  <style>
+    :root{
+      --bg:#060606;
+      --bg-soft:#0b0b0b;
+      --card:#121212;
+      --accent:#ffd84d;
+      --text:#f1f1f1;
+      --muted:#a0a0a0;
+      --border:rgba(255,255,255,.06);
+      --glow:0 0 30px rgba(255,216,77,.45);
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+      background:linear-gradient(180deg,#050505,#090909);
+      color:var(--text);
+      line-height:1.65;
+    }
+
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+
+    section{
+      padding:90px 20px;
+      position:relative;
+    }
+
+    section.alt{
+      background:linear-gradient(180deg,var(--bg-soft),#070707);
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+    }
+
+    h1,h2,h3{
+      font-weight:700;
+      letter-spacing:.3px;
+    }
+
+    h2{
+      font-size:2.2rem;
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    p{color:var(--muted)}
+
+    /* HERO */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      background:
+        radial-gradient(circle at right,rgba(255,216,77,.08),transparent 60%);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:60px;
+      align-items:center;
+    }
+
+    .hero h1{
+      font-size:3.2rem;
+      line-height:1.1;
+    }
+
+    .hero span{
+      color:var(--accent);
+      text-shadow:var(--glow);
+    }
+
+    .hero p{
+      max-width:500px;
+      margin:25px 0 35px;
+    }
+
+    .cta{
+      display:inline-block;
+      padding:15px 36px;
+      border-radius:50px;
+      background:var(--accent);
+      color:#000;
+      font-weight:600;
+      box-shadow:var(--glow);
+      transition:.25s ease;
+    }
+
+    .cta:hover{
+      transform:translateY(-3px);
+    }
+
+    .avatar{
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      box-shadow:
+        0 0 60px rgba(255,216,77,.25),
+        inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    /* GLASS CARD */
+    .card{
+      background:linear-gradient(180deg,#111,#0c0c0c);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:50px;
+    }
+
+    /* SERVICES */
+    .services{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:28px;
+    }
+
+    .service{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:35px;
+    }
+
+    .service h3{
+      color:var(--accent);
+      margin-bottom:12px;
+      font-size:1.15rem;
+    }
+
+    /* PROJECTS */
+    .projects{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:28px;
+    }
+
+    .project{
+      background:linear-gradient(180deg,#111,#0b0b0b);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:35px;
+    }
+
+    .project h3{
+      margin-bottom:10px;
+    }
+
+    .project a{
+      display:inline-block;
+      margin-top:15px;
+      color:var(--accent);
+      font-weight:600;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#050505;
+      border-top:1px solid var(--border);
+      padding:45px 20px;
+      text-align:center;
+    }
+
+    footer p{
+      margin-bottom:12px;
+      color:var(--muted);
+    }
+
+    footer a{
+      margin:0 12px;
+      color:var(--accent);
+      font-weight:500;
+    }
+
+    @media(max-width:900px){
+      .hero-grid{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+
+      .hero p{
+        margin-left:auto;
+        margin-right:auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>
+        Cench<br>
+        <span>Web Designer & Frontend Creator</span>
+      </h1>
+      <p>
+        I design and build modern, visually powerful websites for creators,
+        brands, communities, and digital projects that want to stand out.
+      </p>
+      <a class="cta" href="https://x.com/HeIsCench__" target="_blank">
+        Let’s Build Your Website
+      </a>
+    </div>
+
+    <div class="avatar">
+      <img src="cench.jpg" alt="Cench">
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container card">
+    <h2>About Me</h2>
+    <p>
+      Cench is a frontend web creator and designer who builds visually striking,
+      high-impact websites for brands, creators, and online communities.
+      He focuses on modern UI, strong visual hierarchy, and clean layouts that
+      transform ideas into immersive digital experiences.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Services</h2>
+    <div class="services">
+      <div class="service">
+        <h3>Brand & Portfolio Websites</h3>
+        <p>Identity-driven websites for creators, designers, and digital brands.</p>
+      </div>
+      <div class="service">
+        <h3>Landing Pages & Promo Sites</h3>
+        <p>High-impact pages for launches, events, and online campaigns.</p>
+      </div>
+      <div class="service">
+        <h3>Community & Project Websites</h3>
+        <p>Sites built for communities, Web3 projects, and digital collectives.</p>
+      </div>
+      <div class="service">
+        <h3>Aesthetic Websites</h3>
+        <p>Modern layouts with glow effects, depth, and premium visuals.</p>
+      </div>
+      <div class="service">
+        <h3>Informational Websites</h3>
+        <p>Clean, structured websites for vision, content, and documentation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="container">
+    <h2>Past Projects</h2>
+    <div class="projects">
+      <div class="project">
+        <h3>Masked Zaels</h3>
+        <p>Community-focused aesthetic website with strong visual identity.</p>
+        <a href="https://masked-zaels.github.io/masked-zaels/" target="_blank">
+          View Project →
+        </a>
+      </div>
+      <div class="project">
+        <h3>Solana Druglords</h3>
+        <p>Web3 project website designed for impact and presence.</p>
+        <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank">
+          View Project →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© Cench — Frontend Web Creator</p>
+  <div>
+    <a href="https://x.com/HeIsCench__" target="_blank">Twitter</a>
+    <a href="https://discord.com/users/1243900160426246248" target="_blank">Discord</a>
+  </div>
+</footer>
+
+</body>
+</html>

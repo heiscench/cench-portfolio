@@ -1,299 +1,298 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cench — Web Designer & Frontend Creator</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cench – Web Developer</title>
   <style>
     :root{
-      --bg:#060606;
-      --bg-soft:#0b0b0b;
-      --card:#121212;
-      --accent:#ffd84d;
-      --text:#f1f1f1;
-      --muted:#a0a0a0;
-      --border:rgba(255,255,255,.06);
-      --glow:0 0 30px rgba(255,216,77,.45);
-    }
+      body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #0a0a0a 100%);
+    /* Alternative stronger yellow version: */
+    /* background: linear-gradient(135deg, #111111 0%, #2a1f00 60%, #111111 100%); */
+    color: #ffdd00;                /* or #facc15 for your text/accent yellow */
+    margin: 0;
+    min-height: 100vh;
+}
+  body{
+  body{
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, #F5E6A8, #E6C34A);
+  color: #0B0B0B; /* strong readable black */
+}
+}
+}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+.container{
+  max-width:1100px;
+  padding:20px;
+  margin:auto;
+}
 
-    body{
-      font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-      background:linear-gradient(180deg,#050505,#090909);
-      color:var(--text);
-      line-height:1.65;
-    }
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:24px;
+}
 
-    img{max-width:100%;display:block}
-    a{text-decoration:none;color:inherit}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:600;
+}
 
-    section{
-      padding:90px 20px;
-      position:relative;
-    }
+.dot{
+  width:10px;height:10px;border-radius:50%;background:var(--accent);
+}
 
-    section.alt{
-      background:linear-gradient(180deg,var(--bg-soft),#070707);
-    }
+.links a{
+  text-decoration:none;
+  color:#000;
+  background:linear-gradient(135deg,#e6c34a,#f0d66a);
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:14px;
+  margin-left:8px;
+  font-weight:600;
+}
 
-    .container{
-      max-width:1100px;
-      margin:auto;
-    }
+.card{
+  background:linear-gradient(180deg,var(--card2),var(--card));
+  border-radius:var(--radius);
+  padding:26px;
+  margin-bottom:22px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  border:1px solid rgba(230,195,74,.12);
+}
 
-    h1,h2,h3{
-      font-weight:700;
-      letter-spacing:.3px;
-    }
+.hero h1{
+  font-size:42px;
+  margin:0 0 6px;
+}
 
-    h2{
-      font-size:2.2rem;
-      margin-bottom:30px;
-      text-align:center;
-    }
+.hero p{
+  color:var(--muted);
+  max-width:700px;
+  line-height:1.6;
+}
 
-    p{color:var(--muted)}
+.tags{margin-top:14px}
+.tag{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:13px;
+  background:rgba(230,195,74,.14);
+  color:#f5e6a8;
+  margin-right:8px;
+  margin-bottom:8px;
+  border:1px solid rgba(230,195,74,.3);
+}
 
-    /* HERO */
-    .hero{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      background:
-        radial-gradient(circle at right,rgba(255,216,77,.08),transparent 60%);
-    }
+.profile{
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:60px;
-      align-items:center;
-    }
+.avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle at top,#f0d66a,#b68a1f);
+}
 
-    .hero h1{
-      font-size:3.2rem;
-      line-height:1.1;
-    }
+h3{margin:0 0 10px}
+ul{margin:0;padding-left:18px;color:var(--muted)}
+li{margin-bottom:6px}
 
-    .hero span{
-      color:var(--accent);
-      text-shadow:var(--glow);
-    }
+.service{margin-top:18px}
 
-    .hero p{
-      max-width:500px;
-      margin:25px 0 35px;
-    }
+.cta{
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 16px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#e6c34a,#f0d66a);
+  color:#000;
+  font-weight:700;
+  text-decoration:none;
+  font-size:14px;
+}
 
-    .cta{
-      display:inline-block;
-      padding:15px 36px;
-      border-radius:50px;
-      background:var(--accent);
-      color:#000;
-      font-weight:600;
-      box-shadow:var(--glow);
-      transition:.25s ease;
-    }
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin:40px 0 10px;
+}
 
-    .cta:hover{
-      transform:translateY(-3px);
-    }
+@media(max-width:700px){
+  .hero h1{font-size:34px}
+}
 
-    .avatar{
-      border-radius:22px;
-      overflow:hidden;
-      border:1px solid var(--border);
-      box-shadow:
-        0 0 60px rgba(255,216,77,.25),
-        inset 0 0 0 1px rgba(255,255,255,.04);
-    }
-
-    /* GLASS CARD */
-    .card{
-      background:linear-gradient(180deg,#111,#0c0c0c);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:50px;
-    }
-
-    /* SERVICES */
-    .services{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:28px;
-    }
-
-    .service{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:35px;
-    }
-
-    .service h3{
-      color:var(--accent);
-      margin-bottom:12px;
-      font-size:1.15rem;
-    }
-
-    /* PROJECTS */
-    .projects{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:28px;
-    }
-
-    .project{
-      background:linear-gradient(180deg,#111,#0b0b0b);
-      border-radius:18px;
-      border:1px solid var(--border);
-      padding:35px;
-    }
-
-    .project h3{
-      margin-bottom:10px;
-    }
-
-    .project a{
-      display:inline-block;
-      margin-top:15px;
-      color:var(--accent);
-      font-weight:600;
-    }
-
-    /* FOOTER */
-    footer{
-      background:#050505;
-      border-top:1px solid var(--border);
-      padding:45px 20px;
-      text-align:center;
-    }
-
-    footer p{
-      margin-bottom:12px;
-      color:var(--muted);
-    }
-
-    footer a{
-      margin:0 12px;
-      color:var(--accent);
-      font-weight:500;
-    }
-
-    @media(max-width:900px){
-      .hero-grid{
-        grid-template-columns:1fr;
-        text-align:center;
-      }
-
-      .hero p{
-        margin-left:auto;
-        margin-right:auto;
-      }
-    }
   </style>
 </head>
-
 <body>
+  <div class="container"><header>
+  <div class="logo"><span class="dot"></span> Cench</div>
+  <div class="links">
+    <a href="https://x.com/HeIsCench__">Twitter</a>
+    <a href="https://discord.com/users/1243900160426246248">Discord</a>
+  </div>
+</header>
 
-<section class="hero">
-  <div class="container hero-grid">
+<section class="card hero">
+  <h1>Cench</h1>
+  <p><strong>Web Developer • Web3 Builder</strong></p>
+  <p>
+    I build modern, conversion‑focused websites with clean UI, strong visual hierarchy,
+    and smooth interactions. I also design Web3‑ready frontends that feel premium and ship fast.
+  </p>
+  <div class="tags">
+    <span class="tag">UI / Frontend</span>
+    <span class="tag">Responsive Design</span>
+    <span class="tag">Web3 Interfaces</span>
+  </div>
+</section>
+
+<section class="card">
+  <div class="profile">
+    <div class="avatar"></div>
     <div>
-      <h1>
-        Cench<br>
-        <span>Web Designer & Frontend Creator</span>
-      </h1>
-      <p>
-        I design and build modern, visually powerful websites for creators,
-        brands, communities, and digital projects that want to stand out.
-      </p>
-      <a class="cta" href="https://x.com/HeIsCench__" target="_blank">
-        Let’s Build Your Website
-      </a>
-    </div>
-
-    <div class="avatar">
-      <img src="cench.jpg" alt="Cench">
+      <strong>Cench</strong><br />
+      
+      <span class="tag">Tech</span>
+      <span class="tag">Web3</span>
     </div>
   </div>
 </section>
 
-<section class="alt">
-  <div class="container card">
-    <h2>About Me</h2>
-    <p>
-      I'm a frontend web creator and designer who builds visually striking,
-      high-impact websites for brands, creators, and online communities.
-      I focus on modern UI, strong visual hierarchy, and clean layouts that
-      transform ideas into immersive digital experiences.
-    </p>
+<section class="card">
+  <h3>Quick Bio</h3>
+  <p class="muted">
+    Frontend developer focused on clean, modern interfaces and Web3‑native user experiences.
+  </p>
+</section>
+
+<section class="card">
+  <h3>Focus</h3>
+  <ul>
+    <li>Landing pages & promo websites</li>
+    <li>Brand & portfolio websites</li>
+    <li>Modern UI systems for Web3 products</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h3>About</h3>
+  <p class="muted">
+    I help individuals and brands launch polished, high‑performing websites that look premium
+    and communicate value clearly. My work focuses on UI quality, responsiveness, and speed.
+  </p>
+</section>
+
+<section class="card">
+  <h3>Services</h3>
+
+  <div class="service">
+    <strong>Landing Pages & Promo Sites</strong>
+    <p class="muted">High‑converting pages built for speed, clarity, and strong CTAs.</p>
+    <span class="tag">Conversion</span>
+    <span class="tag">Fast build</span>
+    <span class="tag">Responsive</span>
+  </div>
+
+  <div class="service">
+    <strong>Aesthetic Websites</strong>
+    <p class="muted">Modern layouts, smooth motion, and premium yellow‑on‑black styling.</p>
+    <span class="tag">Premium UI</span>
+    <span class="tag">Modern design</span>
+    <span class="tag">Motion</span>
+  </div>
+
+  <div class="service">
+    <strong>Brand & Portfolio Websites</strong>
+    <p class="muted">Clean online presence optimized for trust, clarity, and credibility.</p>
+    <span class="tag">Brand</span>
+    <span class="tag">Credibility</span>
+    <span class="tag">SEO‑ready</span>
   </div>
 </section>
 
-<section>
-  <div class="container">
-    <h2>Services</h2>
-    <div class="services">
-      <div class="service">
-        <h3>Brand & Portfolio Websites</h3>
-        <p>Identity-driven websites for creators, designers, and digital brands.</p>
-      </div>
-      <div class="service">
-        <h3>Landing Pages & Promo Sites</h3>
-        <p>High-impact pages for launches, events, and online campaigns.</p>
-      </div>
-      <div class="service">
-        <h3>Community & Project Websites</h3>
-        <p>Sites built for communities, Web3 projects, and digital collectives.</p>
-      </div>
-      <div class="service">
-        <h3>Aesthetic Websites</h3>
-        <p>Modern layouts with glow effects, depth, and premium visuals.</p>
-      </div>
-      <div class="service">
-        <h3>Informational Websites</h3>
-        <p>Clean, structured websites for vision, content, and documentation.</p>
-      </div>
+<!-- Selected Work Section (keep as featured/highlight) -->
+<div class="section card">
+  <h2>Selected Work</h2>
+  
+  <div class="project-item">
+    <h3>Launch Landing Page</h3>
+    <p>Conversion-first page with hero, CTA, and mobile-first layout.</p>
+    <div class="project-tags">
+      <span class="tag">Hero + CTA</span>
+      <span class="tag">Social proof</span>
+      <span class="tag">Mobile-first</span>
     </div>
   </div>
-</section>
+  
+  <div class="project-item">
+    <h3>Brand Website</h3>
+    <p>Multi-section site with strong hierarchy and fast performance.</p>
+    <div class="project-tags">
+      <span class="tag">Sections</span>
+      <span class="tag">Design system</span>
+      <span class="tag">Speed</span>
+    </div>
+  </div>
+  
+  <div class="project-item">
+    <h3>Web3 UI Frontend</h3>
+    <p>Wallet-ready dashboards and UI patterns built for trust.</p>
+    <div class="project-tags">
+      <span class="tag">UI patterns</span>
+      <span class="tag">Neon style</span>
+      <span class="tag">UX clarity</span>
+    </div>
+  </div>
+</div>
 
-<section class="alt">
-  <div class="container">
-    <h2>Past Projects</h2>
-    <div class="projects">
-      <div class="project">
-        <h3>Masked Zaels</h3>
-        <p>Community-focused aesthetic website with strong visual identity.</p>
-        <a href="https://masked-zaels.github.io/masked-zaels/" target="_blank">
-          View Project →
-        </a>
-      </div>
-      <div class="project">
-        <h3>Solana Druglords</h3>
-        <p>Web3 project website designed for impact and presence.</p>
-        <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank">
-          View Project →
-        </a>
-      </div>
+<!-- Past Projects Section (now fully separated) -->
+<div class="section card">
+  <h2>Past Projects</h2>
+  
+  <div class="project-item">
+    <h3>Masked Zaels</h3>
+    <p>Community-focused aesthetic website with strong visual identity.</p>
+    <div class="project-tags">
+    <p style="color: green;"
+      <a href="http://maskedzaels.tk/" class="view-btn" target="_blank">View Project →</a>
     </div>
   </div>
+  </p>
+  
+  <div class="project-item">
+    <h3>Solana Druglords</h3>
+    <p>Web3 project website designed for impact and presence.</a>
+    <div class="project-tags">
+    <p style="color: green;"
+      <a href="https://solana-druglords.github.io/solana-druglords/" class="view-btn" target="_blank">View Project →</a>
+    </div>
+  </div>
+  </p>
+  
+  <!-- Add more past projects here in the same format if needed -->
+</div>
+    
+<section class="card">
+  <h3>Contact</h3>
+  <p class="muted">For collaborations or website work, reach out via Twitter or Discord.</p>
+  <a class="cta" href="https://x.com/HeIsCench__">Message on Twitter</a>
+  <a class="cta" href="https://discord.com/users/1243900160426246248" style="margin-left:10px">Message on Discord</a>
 </section>
 
 <footer>
-  <p>© Cench — Frontend Web Creator</p>
-  <div>
-    <a href="https://x.com/HeIsCench__" target="_blank">Twitter</a>
-    <a href="https://discord.com/users/1243900160426246248" target="_blank">Discord</a>
-  </div>
+  © 2026 Cench — Frontend Web Creator
 </footer>
 
+  </div>
 </body>
 </html>

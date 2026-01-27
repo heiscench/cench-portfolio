@@ -4,132 +4,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cench – Web Developer</title>
   <style>
-    :root{
-      body {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #0a0a0a 100%);
-    /* Alternative stronger yellow version: */
-    /* background: linear-gradient(135deg, #111111 0%, #2a1f00 60%, #111111 100%); */
-    color: #ffdd00;                /* or #facc15 for your text/accent yellow */
-    margin: 0;
-    min-height: 100vh;
-}
-  body {
-    background: #000000;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255, 235, 59, 0.08) 0%, transparent 50%);
-    background-size: 100% 100%;
-    color: #ffdd00;
+    :root {
+  --accent: #8f5bff;
+  --muted: #9a9ab0;
+  --card: #0f0f16;
+  --card2: #141422;
+  --radius: 16px;
 }
 
-.container{
-  max-width:1100px;
-  padding:20px;
-  margin:auto;
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
 }
 
-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:24px;
+/* ===== BACKGROUND ===== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #e5e5f0;
+
+  /* 🔮 DARK ANIME PURPLE BACKGROUND */
+  background:
+    radial-gradient(circle at 25% 20%, rgba(143, 91, 255, 0.18), transparent 45%),
+    radial-gradient(circle at 75% 80%, rgba(143, 91, 255, 0.12), transparent 50%),
+    linear-gradient(135deg, #050508 0%, #0b0b12 45%, #07070c 100%);
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:600;
+/* ===== LAYOUT ===== */
+.container {
+  max-width: 1100px;
+  padding: 20px;
+  margin: auto;
 }
 
-.dot{
-  width:10px;height:10px;border-radius:50%;background:var(--accent);
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
-.links a{
-  text-decoration:none;
-  color:#000;
-  background:linear-gradient(135deg,#e6c34a,#f0d66a);
-  padding:8px 14px;
-  border-radius:999px;
-  font-size:14px;
-  margin-left:8px;
-  font-weight:600;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
 }
 
-.card{
-  background:linear-gradient(180deg,var(--card2),var(--card));
-  border-radius:var(--radius);
-  padding:26px;
-  margin-bottom:22px;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-  border:1px solid rgba(230,195,74,.12);
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
-.hero h1{
-  font-size:42px;
-  margin:0 0 6px;
+/* ===== NAV LINKS ===== */
+.links a {
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #8f5bff, #b084ff);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-left: 8px;
+  font-weight: 600;
 }
 
-.hero p{
-  color:var(--muted);
-  max-width:700px;
-  line-height:1.6;
+/* ===== CARDS ===== */
+.card {
+  background: linear-gradient(180deg, var(--card2), var(--card));
+  border-radius: var(--radius);
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(143, 91, 255, 0.18);
 }
 
-.tags{margin-top:14px}
-.tag{
-  display:inline-block;
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:13px;
-  background:rgba(230,195,74,.14);
-  color:#f5e6a8;
-  margin-right:8px;
-  margin-bottom:8px;
-  border:1px solid rgba(230,195,74,.3);
+/* ===== HERO ===== */
+.hero h1 {
+  font-size: 42px;
+  margin: 0 0 6px;
 }
 
-.profile{
-  display:flex;
-  gap:18px;
-  align-items:center;
+.hero p {
+  color: var(--muted);
+  max-width: 700px;
+  line-height: 1.6;
 }
 
-.avatar{
-  width:60px;height:60px;border-radius:50%;
-  background:radial-gradient(circle at top,#f0d66a,#b68a1f);
+/* ===== TAGS ===== */
+.tags {
+  margin-top: 14px;
 }
 
-h3{margin:0 0 10px}
-ul{margin:0;padding-left:18px;color:var(--muted)}
-li{margin-bottom:6px}
-
-.service{margin-top:18px}
-
-.cta{
-  display:inline-block;
-  margin-top:10px;
-  padding:10px 16px;
-  border-radius:999px;
-  background:linear-gradient(135deg,#e6c34a,#f0d66a);
-  color:#000;
-  font-weight:700;
-  text-decoration:none;
-  font-size:14px;
+.tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: rgba(143, 91, 255, 0.16);
+  color: #d8c9ff;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(143, 91, 255, 0.35);
 }
 
-footer{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin:40px 0 10px;
+/* ===== PROFILE ===== */
+.profile {
+  display: flex;
+  gap: 18px;
+  align-items: center;
 }
 
-(max-width:700px){
-  .hero h1{font-size:34px}
-}>
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at top, #b084ff, #4a2a9c);
+}
 
+/* ===== TEXT ===== */
+h3 {
+  margin: 0 0 10px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+/* ===== CTA ===== */
+.cta {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8f5bff, #b084ff);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 40px 0 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 700px) {
+  .hero h1 {
+    font-size: 34px;
+  }
+}
   </style>
 </head>
 <body>

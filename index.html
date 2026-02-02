@@ -1,353 +1,480 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cench – Web Developer</title>
+  <title>Cench – Web Developer • Web3 Builder</title>
+
+  <!-- Google Fonts (modern + fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-  --accent: #8f5bff;
-  --muted: #9a9ab0;
-  --card: #0f0f16;
-  --card2: #141422;
-  --radius: 16px;
-}
+      --accent: #8f5bff;
+      --accent-glow: #b084ff;
+      --accent-dark: #4a2a9c;
+      --bg-dark: #050508;
+      --card: #0f0f16;
+      --card2: #141422;
+      --text: #e5e5f0;
+      --muted: #9a9ab0;
+      --radius: 16px;
+      --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
-/* ===== RESET ===== */
-* {
-  box-sizing: border-box;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ===== BACKGROUND ===== */
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #e5e5f0;
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(143, 91, 255, 0.14) 0%, transparent 50%),
+        radial-gradient(circle at 85% 75%, rgba(143, 91, 255, 0.11) 0%, transparent 55%),
+        linear-gradient(135deg, #050508 0%, #0b0b12 50%, #07070c 100%);
+    }
 
-  /* 🔮 DARK ANIME PURPLE BACKGROUND */
-  background:
-    radial-gradient(circle at 25% 20%, rgba(143, 91, 255, 0.18), transparent 45%),
-    radial-gradient(circle at 75% 80%, rgba(143, 91, 255, 0.12), transparent 50%),
-    linear-gradient(135deg, #050508 0%, #0b0b12 45%, #07070c 100%);
-}
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-/* ===== LAYOUT ===== */
-.container {
-  max-width: 1100px;
-  padding: 20px;
-  margin: auto;
-}
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 0 80px;
+      opacity: 0;
+      transform: translateY(-30px);
+      animation: headerFade 1.2s ease-out forwards;
+    }
 
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
+    @keyframes headerFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 600;
-}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+    }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-}
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(143,91,255,0.4);
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
 
-/* ===== NAV LINKS ===== */
-.links a {
-  text-decoration: none;
-  color: #fff;
-  background: linear-gradient(135deg, #8f5bff, #b084ff);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-  margin-left: 8px;
-  font-weight: 600;
-}
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 16px var(--accent); }
+      50%      { transform: scale(1.3); box-shadow: 0 0 32px var(--accent-glow); }
+    }
 
-/* ===== CARDS ===== */
-.card {
-  background: linear-gradient(180deg, var(--card2), var(--card));
-  border-radius: var(--radius);
-  padding: 26px;
-  margin-bottom: 22px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(143, 91, 255, 0.18);
-}
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-left: 12px;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
 
-/* ===== HERO ===== */
-.hero h1 {
-  font-size: 42px;
-  margin: 0 0 6px;
-}
+    .nav-links a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(143,91,255,0.35);
+    }
 
-.hero p {
-  color: var(--muted);
-  max-width: 700px;
-  line-height: 1.6;
-}
+    /* Hero */
+    .hero {
+      padding: 40px 0 100px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1s 0.4s ease-out forwards;
+    }
 
-/* ===== TAGS ===== */
-.tags {
-  margin-top: 14px;
-}
+    .hero h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      font-weight: 700;
+      letter-spacing: -2px;
+      background: linear-gradient(90deg, #fff, var(--accent-glow), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 16px;
+    }
 
-.tag {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  background: rgba(143, 91, 255, 0.16);
-  color: #d8c9ff;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  border: 1px solid rgba(143, 91, 255, 0.35);
-}
+    .hero .subtitle {
+      font-size: 1.4rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
 
-/* ===== PROFILE ===== */
-.profile {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-}
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
 
-.avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(circle at top, #b084ff, #4a2a9c);
-}
+    .tag {
+      background: rgba(143,91,255,0.12);
+      color: var(--accent-glow);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(143,91,255,0.3);
+      transition: var(--transition);
+    }
 
-/* ===== TEXT ===== */
-h3 {
-  margin: 0 0 10px;
-}
+    .tag:hover {
+      background: rgba(143,91,255,0.25);
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(143,91,255,0.3);
+    }
 
-ul {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-}
+    /* Card */
+    .card {
+      background: linear-gradient(145deg, var(--card2), var(--card));
+      border-radius: var(--radius);
+      padding: 32px;
+      margin: 32px 0;
+      border: 1px solid rgba(143,91,255,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: translateY(50px);
+      transition: var(--transition);
+    }
 
-li {
-  margin-bottom: 6px;
-}
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-/* ===== CTA ===== */
-.cta {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #8f5bff, #b084ff);
-  color: #fff;
-  font-weight: 700;
-  text-decoration: none;
-  font-size: 14px;
-}
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 80px rgba(143,91,255,0.15);
+      border-color: rgba(143,91,255,0.35);
+    }
 
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  margin: 40px 0 10px;
-}
+    h2, h3 {
+      font-family: 'Orbitron', monospace;
+      margin-bottom: 16px;
+      color: white;
+    }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 700px) {
-  .hero h1 {
-    font-size: 34px;
-  }
-}
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-glow), var(--accent-dark));
+      box-shadow: 0 0 30px rgba(143,91,255,0.4);
+      transition: var(--transition);
+    }
+
+    .profile:hover .avatar {
+      transform: scale(1.1) rotate(8deg);
+      box-shadow: 0 0 50px rgba(143,91,255,0.6);
+    }
+
+    .service, .project-item {
+      padding: 20px;
+      margin: 16px 0;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px;
+      transition: var(--transition);
+    }
+
+    .service:hover, .project-item:hover {
+      background: rgba(143,91,255,0.08);
+      transform: translateY(-6px);
+    }
+
+    .view-btn, .cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-glow));
+      color: white;
+      padding: 12px 24px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 12px;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    .view-btn:hover, .cta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(143,91,255,0.35);
+    }
+
+    .cta + .cta {
+      margin-left: 16px;
+    }
+
+    /* Media wrapper */
+    .project-card-media {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      max-width: 720px;
+      margin: 32px auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      border: 1px solid rgba(143,91,255,0.2);
+      transition: var(--transition);
+    }
+
+    .project-card-media:hover {
+      transform: scale(1.015);
+      box-shadow: 0 30px 90px rgba(143,91,255,0.25);
+    }
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 80px 0 40px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 24px 0 60px; }
+      .hero { padding: 20px 0 80px; }
+      .hero h1 { font-size: clamp(3rem, 12vw, 5.5rem); }
+      .card { padding: 24px; }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container"><header>
-  <div class="logo"><span class="dot"></span> Cench</div>
-  <div class="links">
-    <a href="https://x.com/HeIsCench__">Twitter</a>
-    <a href="https://discord.com/users/1243900160426246248">Discord</a>
-  </div>
-</header>
+<div class="container">
 
-<section class="card hero">
-  <h1>Cench</h1>
-  <p><strong>Web Developer • Web3 Builder</strong></p>
-  <p>
-    I build modern, conversion‑focused websites with clean UI, strong visual hierarchy,
-    and smooth interactions. I also design Web3‑ready frontends that feel premium and ship fast.
-  </p>
-  <div class="tags">
-    <span class="tag">UI / Frontend</span>
-    <span class="tag">Responsive Design</span>
-    <span class="tag">Web3 Interfaces</span>
-  </div>
-</section>
+  <header>
+    <div class="logo">
+      <span class="dot"></span>
+      Cench
+    </div>
+    <div class="nav-links">
+      <a href="https://x.com/HeIsCench__" target="_blank">Twitter</a>
+      <a href="https://discord.com/users/1243900160426246248" target="_blank">Discord</a>
+    </div>
+  </header>
 
-<section class="card">
-  <img src="cench.jpg" alt="Cench profile picture" 
-    class="avatar"/>
-  <div>
-    <strong>Cench</strong><br />
-    <span class="tag">Tech</span>
-    <span class="tag">Web3</span>
-  </div>
-</section>
+  <section class="hero">
+    <h1>Cench</h1>
+    <div class="subtitle">
+      <strong>Web Developer • Web3 Builder</strong><br><br>
+      I build modern, conversion-focused websites with clean UI, strong visual hierarchy,<br>
+      and smooth interactions. Also designing premium-feeling Web3 frontends that ship fast.
+    </div>
+    <div class="tags">
+      <span class="tag">UI / Frontend</span>
+      <span class="tag">Responsive Design</span>
+      <span class="tag">Web3 Interfaces</span>
+      <span class="tag">Motion</span>
+      <span class="tag">Conversion</span>
+    </div>
+  </section>
 
-<section class="card">
-  <h3>Quick Bio</h3>
-  <p class="muted">
-    Frontend developer focused on clean, modern interfaces and Web3‑native user experiences.
-  </p>
-</section>
-
-<section class="card">
-  <h3>Focus</h3>
-  <ul>
-    <li>Landing pages & promo websites</li>
-    <li>Brand & portfolio websites</li>
-    <li>Modern UI systems for Web3 products</li>
-  </ul>
-</section>
-
-<section class="card">
-  <h3>About</h3>
-  <p class="muted">
-    I help individuals and brands launch polished, high‑performing websites that look premium
-    and communicate value clearly. My work focuses on UI quality, responsiveness, and speed.
-  </p>
-</section>
-
-<section class="card">
-  <h3>Services</h3>
-
-  <div class="service">
-    <strong>Landing Pages & Promo Sites</strong>
-    <p class="muted">High‑converting pages built for speed, clarity, and strong CTAs.</p>
-    <span class="tag">Conversion</span>
-    <span class="tag">Fast build</span>
-    <span class="tag">Responsive</span>
-  </div>
-
-  <div class="service">
-    <strong>Aesthetic Websites</strong>
-    <p class="muted">Modern layouts, smooth motion, and premium yellow‑on‑black styling.</p>
-    <span class="tag">Premium UI</span>
-    <span class="tag">Modern design</span>
-    <span class="tag">Motion</span>
-  </div>
-
-  <div class="service">
-    <strong>Brand & Portfolio Websites</strong>
-    <p class="muted">Clean online presence optimized for trust, clarity, and credibility.</p>
-    <span class="tag">Brand</span>
-    <span class="tag">Credibility</span>
-    <span class="tag">SEO‑ready</span>
-  </div>
-</section>
-
-<!-- Selected Work Section (keep as featured/highlight) -->
-<div class="section card">
-  <h2>Selected Work</h2>
-  
-  <div class="project-item">
-    <h3>Launch Landing Page</h3>
-    <p>Conversion-first page with hero, CTA, and mobile-first layout.</p>
-    <div class="project-tags">
-      <span class="tag">Hero + CTA</span>
-      <span class="tag">Social proof</span>
-      <span class="tag">Mobile-first</span>
+  <div class="card profile">
+    <img src="cench.jpg" alt="Cench" class="avatar">
+    <div>
+      <strong style="font-size:1.4rem;">Cench</strong><br><br>
+      <span class="tag">Tech</span>
+      <span class="tag">Web3</span>
     </div>
   </div>
-  
-  <div class="project-item">
-    <h3>Brand Website</h3>
-    <p>Multi-section site with strong hierarchy and fast performance.</p>
-    <div class="project-tags">
-      <span class="tag">Sections</span>
-      <span class="tag">Design system</span>
-      <span class="tag">Speed</span>
-    </div>
-  </div>
-  
-  <div class="project-item">
-    <h3>Web3 UI Frontend</h3>
-    <p>Wallet-ready dashboards and UI patterns built for trust.</p>
-    <div class="project-tags">
-      <span class="tag">UI patterns</span>
-      <span class="tag">Neon style</span>
-      <span class="tag">UX clarity</span>
-    </div>
-  </div>
-</div>
-  <div class="section card">
-                          <h2>past works</h2>
-</div>
 
-<div class="project-card-media" style="
-  position: relative;
-  width: 100%;
-  max-width: 640px;           /* ← cap it so it doesn't get ridiculously wide on desktop */
-  margin: 0 auto 1.5rem;      /* ← centers it + breathing room below */
-  aspect-ratio: 16 / 9;       /* modern replacement for padding hack – cleaner */
-  overflow: hidden;
-  border-radius: 12px;        /* optional – matches neon/Web3 aesthetic */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* subtle lift */
-">
-  <iframe 
-    class="rumble"
-    src="https://rumble.com/embed/v72rcma/?pub=4oilfi"
-    frameborder="0"
-    allowfullscreen
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-  ></iframe>
-</div>
+  <div class="card">
+    <h3>Quick Bio</h3>
+    <p style="color:var(--muted); line-height:1.7;">
+      Frontend developer focused on clean, modern interfaces and Web3-native user experiences.
+    </p>
+  </div>
 
-<div class="section card">
-  <h2>Past Projects</h2>
-  
-  <div class="project-item">
-    <h3>Masked Zaels</h3>
-    <p>Community-focused aesthetic website with strong visual identity.</p>
-    <div class="project-tags">
-    
-    <a href="https://masked-zaels.github.io/masked-zaels/" class="view-btn" target="_blank">View Project →</a>
+  <div class="card">
+    <h3>Focus</h3>
+    <ul style="color:var(--muted); line-height:1.8; padding-left:24px;">
+      <li>Landing pages & promo websites</li>
+      <li>Brand & portfolio websites</li>
+      <li>Modern UI systems for Web3 products</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>About</h3>
+    <p style="color:var(--muted); line-height:1.7;">
+      I help individuals and brands launch polished, high-performing websites that look premium<br>
+      and communicate value clearly. My work focuses on UI quality, responsiveness, speed and trust.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3>Services</h3>
+
+    <div class="service">
+      <strong>Landing Pages & Promo Sites</strong>
+      <p style="color:var(--muted); margin:12px 0;">High-converting pages built for speed, clarity, and strong CTAs.</p>
+      <span class="tag">Conversion</span>
+      <span class="tag">Fast build</span>
+      <span class="tag">Responsive</span>
+    </div>
+
+    <div class="service">
+      <strong>Aesthetic Websites</strong>
+      <p style="color:var(--muted); margin:12px 0;">Modern layouts, smooth motion, premium dark/neon styling.</p>
+      <span class="tag">Premium UI</span>
+      <span class="tag">Motion</span>
+      <span class="tag">Neon</span>
+    </div>
+
+    <div class="service">
+      <strong>Brand & Portfolio Websites</strong>
+      <p style="color:var(--muted); margin:12px 0;">Clean online presence optimized for trust, clarity, and credibility.</p>
+      <span class="tag">Brand</span>
+      <span class="tag">Credibility</span>
+      <span class="tag">SEO-ready</span>
     </div>
   </div>
-  
-  
-  <div class="project-item">
-    <h3>Solana Druglords</h3>
-    <p>Web3 project website designed for impact and presence.</a>
-    <div class="project-tags">
-    
+
+  <div class="card">
+    <h2>Selected Work</h2>
+
+    <div class="project-item">
+      <h3>Launch Landing Page</h3>
+      <p style="color:var(--muted);">Conversion-first page with hero, CTA, and mobile-first layout.</p>
+      <div class="tags">
+        <span class="tag">Hero + CTA</span>
+        <span class="tag">Social proof</span>
+        <span class="tag">Mobile-first</span>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <h3>Brand Website</h3>
+      <p style="color:var(--muted);">Multi-section site with strong hierarchy and fast performance.</p>
+      <div class="tags">
+        <span class="tag">Sections</span>
+        <span class="tag">Design system</span>
+        <span class="tag">Speed</span>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <h3>Web3 UI Frontend</h3>
+      <p style="color:var(--muted);">Wallet-ready dashboards and UI patterns built for trust.</p>
+      <div class="tags">
+        <span class="tag">UI patterns</span>
+        <span class="tag">Neon style</span>
+        <span class="tag">UX clarity</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center;">
+    <h2>Past Works</h2>
+  </div>
+
+  <div class="project-card-media">
+    <iframe src="https://rumble.com/embed/v72rcma/?pub=4oilfi" allowfullscreen></iframe>
+  </div>
+
+  <div class="card">
+    <h2>Past Projects</h2>
+
+    <div class="project-item">
+      <h3>Masked Zaels</h3>
+      <p style="color:var(--muted);">Community-focused aesthetic website with strong visual identity.</p>
+      <a href="https://masked-zaels.github.io/masked-zaels/" class="view-btn" target="_blank">View Project →</a>
+    </div>
+
+    <div class="project-item">
+      <h3>Solana Druglords</h3>
+      <p style="color:var(--muted);">Web3 project website designed for impact and presence.</p>
       <a href="https://solana-druglords.github.io/solana-druglords/" class="view-btn" target="_blank">View Project →</a>
     </div>
   </div>
+
+  <div class="card" style="text-align:center;">
+    <h3>Contact</h3>
+    <p style="color:var(--muted); margin:24px 0;">For collaborations, commissions or questions — reach out anytime.</p>
+    <a href="https://x.com/HeIsCench__" class="cta" target="_blank">Message on Twitter</a>
+    <a href="https://discord.com/users/1243900160426246248" class="cta" target="_blank">Message on Discord</a>
+  </div>
+
+  <footer>
+    © 2026 Cench — Frontend Web Creator
+  </footer>
+
 </div>
 
-  <!-- Add more past projects here in the same format if needed -->
+<script>
+// Simple scroll reveal
+const cards = document.querySelectorAll('.card');
 
-    
-<section class="card">
-  <h3>Contact</h3>
-  <p class="muted">For collaborations or website work, reach out via Twitter or Discord.</p>
-  <a class="cta" href="https://x.com/HeIsCench__">Message on Twitter</a>
-  <a class="cta" href="https://discord.com/users/1243900160426246248" style="margin-left:10px">Message on Discord</a>
-</section>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {
+  threshold: 0.15
+});
 
-<footer>
-  © 2026 Cench — Frontend Web Creator
-</footer>
+cards.forEach(card => observer.observe(card));
+</script>
 
-  </div>
 </body>
 </html>

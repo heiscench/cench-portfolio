@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cench – Web Developer • Web3 Builder</title>
 
-  <!-- Google Fonts (modern + fallback) -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Vanilla Tilt for 3D card effect -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 
   <style>
     :root {
@@ -36,16 +39,65 @@
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(143, 91, 255, 0.14) 0%, transparent 50%),
-        radial-gradient(circle at 85% 75%, rgba(143, 91, 255, 0.11) 0%, transparent 55%),
-        linear-gradient(135deg, #050508 0%, #0b0b12 50%, #07070c 100%);
+      position: relative;
     }
 
     .container {
       max-width: 1180px;
       margin: 0 auto;
       padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Animated background blobs */
+    .animated-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      pointer-events: none;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(143, 91, 255, 0.09) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(143, 91, 255, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 40% 80%, rgba(180, 132, 255, 0.06) 0%, transparent 50%);
+      animation: moveBlobs 22s ease-in-out infinite alternate;
+      opacity: 0.75;
+    }
+
+    @keyframes moveBlobs {
+      0% {
+        transform: translate(0, 0) scale(1);
+        background-position: 0% 0%, 100% 100%, 50% 50%;
+      }
+      50% {
+        transform: translate(5%, -4%) scale(1.06);
+        background-position: 35% 25%, 65% 75%, 15% 65%;
+      }
+      100% {
+        transform: translate(-4%, 6%) scale(1.12);
+        background-position: 70% 45%, 30% 55%, 85% 35%;
+      }
+    }
+
+    /* Mouse glow / spotlight */
+    .mouse-glow {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle at center, rgba(143, 91, 255, 0.18) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: -2;
+      transform: translate(-50%, -50%);
+      opacity: 0.8;
+      mix-blend-mode: screen;
+      transition: opacity 0.5s ease;
+    }
+
+    @media (max-width: 768px) {
+      .mouse-glow,
+      .animated-bg { 
+        opacity: 0.5; 
+      }
     }
 
     /* Header */
@@ -54,13 +106,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 32px 0 80px;
-      opacity: 0;
-      transform: translateY(-30px);
-      animation: headerFade 1.2s ease-out forwards;
-    }
-
-    @keyframes headerFade {
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .logo {
@@ -72,6 +117,7 @@
       font-weight: 700;
       letter-spacing: 1px;
       color: white;
+      position: relative;
     }
 
     .dot {
@@ -110,9 +156,6 @@
     .hero {
       padding: 40px 0 100px;
       text-align: center;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: fadeUp 1s 0.4s ease-out forwards;
     }
 
     .hero h1 {
@@ -135,6 +178,21 @@
       margin-left: auto;
       margin-right: auto;
       line-height: 1.5;
+    }
+
+    .typing {
+      color: var(--muted);
+      font-size: 1.35rem;
+      line-height: 1.6;
+    }
+
+    .typing::after {
+      content: "|";
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
     }
 
     .tags {
@@ -161,27 +219,27 @@
       box-shadow: 0 0 20px rgba(143,91,255,0.3);
     }
 
-    /* Card */
-    .card {
+    /* Cards & media */
+    .card, .project-card-media {
       background: linear-gradient(145deg, var(--card2), var(--card));
       border-radius: var(--radius);
       padding: 32px;
       margin: 32px 0;
       border: 1px solid rgba(143,91,255,0.15);
       box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
       opacity: 0;
-      transform: translateY(50px);
-      transition: var(--transition);
+      transform: translateY(40px) scale(0.96);
     }
 
-    .card.visible {
+    .card.revealed, .project-card-media.revealed {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 30px 80px rgba(143,91,255,0.15);
+    .card:hover, .project-card-media:hover {
+      transform: translateY(-8px) scale(1.015);
+      box-shadow: 0 30px 80px rgba(143,91,255,0.2);
       border-color: rgba(143,91,255,0.35);
     }
 
@@ -191,9 +249,7 @@
       color: white;
     }
 
-    h3 {
-      font-size: 1.5rem;
-    }
+    h3 { font-size: 1.5rem; }
 
     .profile {
       display: flex;
@@ -251,7 +307,6 @@
       margin-left: 16px;
     }
 
-    /* Media wrapper */
     .project-card-media {
       position: relative;
       aspect-ratio: 16 / 9;
@@ -259,14 +314,7 @@
       margin: 32px auto;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
       border: 1px solid rgba(143,91,255,0.2);
-      transition: var(--transition);
-    }
-
-    .project-card-media:hover {
-      transform: scale(1.015);
-      box-shadow: 0 30px 90px rgba(143,91,255,0.25);
     }
 
     iframe {
@@ -282,10 +330,8 @@
       padding: 80px 0 40px;
       color: var(--muted);
       font-size: 0.9rem;
-    }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+      position: relative;
+      z-index: 1;
     }
 
     @media (max-width: 768px) {
@@ -294,9 +340,23 @@
       .hero h1 { font-size: clamp(3rem, 12vw, 5.5rem); }
       .card { padding: 24px; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animated-bg,
+      .mouse-glow,
+      .dot,
+      .typing::after,
+      * { 
+        animation: none !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 <body>
+
+<div class="animated-bg"></div>
+<div class="mouse-glow"></div>
 
 <div class="container">
 
@@ -314,9 +374,9 @@
   <section class="hero">
     <h1>Cench</h1>
     <div class="subtitle">
-      <strong>Web Developer • Web3 Builder</strong><br><br>
-      I build modern, conversion-focused websites with clean UI, strong visual hierarchy,<br>
-      and smooth interactions. Also designing premium-feeling Web3 frontends that ship fast.
+      <strong>Web Developer • Web3 Builder</strong>
+      <br><br>
+      <span class="typing" id="typing-text"></span>
     </div>
     <div class="tags">
       <span class="tag">UI / Frontend</span>
@@ -426,9 +486,10 @@
     <h2>Past Works</h2>
   </div>
 
-  <div class="project-card-media">
+<div class="project-card-media">
     <iframe width="1080" height="1920" src="https://flixier.com/embed/q81z5oGR" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
   </div>
+
 
   <div class="card">
     <h2>Past Projects</h2>
@@ -443,15 +504,8 @@
       <h3>Solana Druglords</h3>
       <p style="color:var(--muted);">Web3 project website designed for impact and presence.</p>
       <a href="https://solana-druglords.github.io/solana-druglords/" class="view-btn" target="_blank">View Project →</a>
-      
     </div>
-  
-<div class="project-item">
-      <h3>Nerd Werd</h3>
-      <p style="color:var(--muted);">Community-focused aesthetic website with strong visual identity.</p>
-      <a href="https://nerdsnft.vercel.app/" class="view-btn" target="_blank">View Project →</a>
-    </div>
-</div>
+  </div>
 
   <div class="card" style="text-align:center;">
     <h3>Contact</h3>
@@ -467,20 +521,64 @@
 </div>
 
 <script>
-// Simple scroll reveal
-const cards = document.querySelectorAll('.card');
+// 1. Mouse glow effect
+document.addEventListener('mousemove', (e) => {
+  const glow = document.querySelector('.mouse-glow');
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+// 2. Scroll reveal with stagger
+const revealElements = document.querySelectorAll('.card, .hero, .project-card-media');
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
     if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
+      setTimeout(() => {
+        entry.target.classList.add('revealed');
+      }, index * 90);
+      revealObserver.unobserve(entry.target);
     }
   });
 }, {
-  threshold: 0.15
+  threshold: 0.1,
+  rootMargin: "0px 0px -100px 0px"
 });
 
-cards.forEach(card => observer.observe(card));
+revealElements.forEach(el => revealObserver.observe(el));
+
+// 3. 3D Tilt effect
+VanillaTilt.init(document.querySelectorAll('.card, .project-card-media'), {
+  max: 12,
+  speed: 500,
+  glare: true,
+  "max-glare": 0.4,
+  scale: 1.03,
+  perspective: 1000,
+  transition: true
+});
+
+// 4. Typing animation
+const typingElement = document.getElementById('typing-text');
+const fullText = "I build modern, conversion-focused websites with clean UI, strong visual hierarchy, and smooth interactions. Also designing premium-feeling Web3 frontends that ship fast.";
+let charIndex = 0;
+
+function typeWriter() {
+  if (charIndex < fullText.length) {
+    typingElement.textContent += fullText.charAt(charIndex);
+    charIndex++;
+    setTimeout(typeWriter, 32);
+  }
+}
+
+const heroObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    setTimeout(typeWriter, 600);
+    heroObserver.disconnect();
+  }
+}, { threshold: 0.3 });
+
+heroObserver.observe(document.querySelector('.hero'));
 </script>
 
 </body>

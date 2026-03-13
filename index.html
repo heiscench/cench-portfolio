@@ -49,6 +49,29 @@
       position: relative;
       z-index: 2;
     }
+/* Add this to your stylesheet o
+projects-hero {
+  position: relative;
+  min-height: 100vh;          /* or 80vh for shorter hero */
+  background: url('YOUR_STARRY_IMAGE_URL.jpg') no-repeat center center / cover fixed;  /* replace with your actual image src */
+  background-attachment: fixed; /* optional parallax feel */
+  overflow: hidden;           /* prevents any child overflow */
+}
+
+.projects-hero::before {      /* subtle overlay to improve text readability */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); /* dark tint so stars don't overpower text */
+  z-index: 1;
+}
+
+.projects-content {
+  position: relative;
+  z-index: 2;                 /* content above overlay */
+  padding: 8rem 2rem;
+  color: white;
+}
 
     /* === MOVING PURPLE RINGS BACKGROUND === */
     .rings-bg {
@@ -524,8 +547,9 @@
     </p>
   </div>
 
-  <!-- Projects Grid (responsive: 1 col mobile → 2 tablet → 3 desktop) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div class="projects-hero">
+  <div class="projects-content max-w-7xl mx-auto">
+    <!-- Your current Selected Work title + subtitle + grid of project cards here -->
 
     <!-- 1. Lunar Howl -->
     <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">

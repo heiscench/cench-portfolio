@@ -49,7 +49,8 @@
       position: relative;
       z-index: 2;
     }
-body, html {
+
+ {
   height: 100%;
   margin: 0;
   overflow-x: hidden;         /* kills horizontal scroll/overflow */
@@ -75,6 +76,19 @@ body, html {
   z-index: 2;                 /* content above overlay */
   padding: 8rem 2rem;
   color: white;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;         /* kills horizontal scroll/overflow */
+}
+
+.your-section-wrapper {       /* the div around Selected Work */
+  background: url(...) center/cover no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  overflow: hidden;
 }
 
     /* === MOVING PURPLE RINGS BACKGROUND === */

@@ -736,34 +736,44 @@ footer {
     </div>
 
     <!-- 2. Solana Daemon -->
-    <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-      <div class="h-72 overflow-hidden">
-        <img src="dam.jpg"
-             alt="Daemon" 
-             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-      </div>
-      <div class=absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent 
-            opacity-100   <!-- change from opacity-0 group-hover:opacity-100 -->
-            transition-opacity flex flex"-col justify-end p-8">
-</div>
-        <h3 class="text-3xl font-bold">Solana Daemon</h3>
-        <h3 class="text-3xl font-bold">Daemon</h3>
-        <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">
-          High-impact Web3 launch site built for viral presence and seamless onboarding.
-        </p>
-        <a href="https://daemon-xi.vercel.app/" target="_blank" 
-           class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">
-          View Project →
-        </a>
-      </div>
-      <div class="p-8">
-        <h3 class="text-2xl font-semibold"></h3>
-        <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">
-      
-        </p>
-      </div>
-    </div>
+<div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl hover:shadow-purple-900/30 transition-shadow duration-500">
 
+  <!-- Image container -->
+  <div class="h-72 overflow-hidden">
+    <img 
+      src="dam.jpg" 
+      alt="Solana Daemon" 
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+    >
+  </div>
+
+  <!-- Overlay gradient + content -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+
+    <h3 class="text-3xl font-bold text-white">Solana Daemon</h3>
+    <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">
+      High-impact Web3 launch site built for viral presence and seamless onboarding.
+    </p>
+
+    <a 
+      href="https://daemon-xi.vercel.app/" 
+      target="_blank"
+      class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full text-white font-medium hover:from-purple-700 hover:to-indigo-700 transition-all group-hover:scale-105"
+    >
+      View Project →
+    </a>
+  </div>
+
+  <!-- Optional: small card title below image (only if you want both overlay + bottom title) -->
+  <!-- If you DON'T want the bottom title, just delete this whole div -->
+  <div class="p-8">
+    <h3 class="text-2xl font-semibold text-white">Solana Daemon</h3>
+    <p style="color: var(--muted);" class="mt-2 text-sm line-clamp-2">
+      High-impact Web3 launch site...
+    </p>
+  </div>
+
+</div>
     <!-- 3. Nerd -->
  <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-900 shadow-xl">
   <img 

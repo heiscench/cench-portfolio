@@ -689,10 +689,8 @@ footer {
 
 
   
-
-   <!-- PASTE THIS ENTIRE BLOCK IN PLACE OF YOUR CURRENT PROJECT-ITEMS + CONTACT CARD -->
-<!-- It uses Tailwind (add the CDN script in <head> if you haven't already: <script src="https://cdn.tailwindcss.com"><div class="max-w-7xl mx-auto px-6 py-20"></script>) -->
-<!-- All your exact links + 6 projects preserved. Unique descriptions. Hover magic. Ready to go. -->
+<!-- PASTE THIS ENTIRE BLOCK IN PLACE OF YOUR CURRENT PROJECT-ITEMS -->
+<div class="max-w-7xl mx-auto px-6 py-20">
 
   <!-- Section Title -->
   <div class="text-center mb-16">
@@ -706,109 +704,110 @@ footer {
 
   <div class="projects-hero">
     <div class="projects-content max-w-7xl mx-auto">
-      <!-- GRID + LIGHTER CARDS + BUTTON ALWAYS VISIBLE -->
+      <!-- GRID -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         <!-- 1. Lunar Howl -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
+          <!-- IMAGE + HOVER OVERLAY ONLY (fixed nesting) -->
+          <div class="relative h-72 overflow-hidden">
             <img src="lunar.jpg" alt="Lunar Howl" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Lunar Howl</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Community-driven aesthetic hub with immersive visuals and strong DAO identity.</p>
+              <a href="https://lunarhow.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Lunar Howl</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Community-driven aesthetic hub with immersive visuals and strong DAO identity.</p>
-            <a href="https://lunarhow.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
-          </div>
+          <!-- BOTTOM CONTENT (always visible + clickable) -->
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Lunar Howl</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">Community-focused aesthetic website with strong visual identity.</p>
-            <!-- BUTTON NOW ALWAYS HERE FOR MOBILE TAP -->
-            <a href="https://lunarhow.vercel.app/" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://lunarhow.vercel.app/" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
         <!-- 2. Solana Daemon -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
+          <div class="relative h-72 overflow-hidden">
             <img src="dam.jpg" alt="Solana Daemon" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Solana Daemon</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">High-impact Web3 launch site built for viral presence and seamless onboarding.</p>
-            <a href="https://daemon-xi.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Solana Daemon</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">High-impact Web3 launch site built for viral presence and seamless onboarding.</p>
+              <a href="https://daemon-xi.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Solana Daemon</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">Web3 project website designed for impact and presence.</p>
-            <a href="https://daemon-xi.vercel.app/" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://daemon-xi.vercel.app/" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
         <!-- 3. Nerd -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1555066931-bf19c9d1087f?w=800&h=600&fit=crop" alt="Nerd" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Nerd</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Bold NFT collector platform emphasizing meme culture and instant community engagement.</p>
-            <a href="https://nerdsnft.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+          <div class="relative h-72 overflow-hidden">
+            <img src="nerd.jpg" alt="Nerd" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Nerd</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Bold NFT collector platform emphasizing meme culture and instant community engagement.</p>
+              <a href="https://nerdsnft.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Nerd</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">Web3 project website designed for impact and presence.</p>
-            <a href="https://nerdsnft.vercel.app/" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://nerdsnft.vercel.app/" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
         <!-- 4. Solana Druglords -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
+          <div class="relative h-72 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop" alt="Solana Druglords" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Solana Druglords</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Edgy Solana NFT drop site with gritty visuals and community-first mechanics.</p>
-            <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Solana Druglords</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Edgy Solana NFT drop site with gritty visuals and community-first mechanics.</p>
+              <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Solana Druglords</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">Web3 project website designed for impact and presence.</p>
-            <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
         <!-- 5. Connor Portfolio -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
+          <div class="relative h-72 overflow-hidden">
             <img src="connor.jpg" alt="Connor Portfolio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Connor Portfolio</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Personal portfolio website showcasing creative work with clean modern design.</p>
-            <a href="https://connor-olive.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Connor Portfolio</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Personal portfolio website showcasing creative work with clean modern design.</p>
+              <a href="https://connor-olive.vercel.app/" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Connor Portfolio</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">A portfolio.</p>
-            <a href="https://connor-olive.vercel.app/" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://connor-olive.vercel.app/" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
         <!-- 6. Zmmagic Portfolio -->
         <div class="project-item group relative overflow-hidden rounded-3xl bg-zinc-800 shadow-2xl hover:shadow-purple-900/40 transition-all duration-500 hover:-translate-y-3">
-          <div class="h-72 overflow-hidden">
+          <div class="relative h-72 overflow-hidden">
             <img src="magic.jpg" alt="Zmmagic Portfolio" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-          </div>
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
-            <h3 class="text-3xl font-bold">Zmmagic Portfolio</h3>
-            <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Aesthetic personal portfolio with strong visual identity and immersive experience.</p>
-            <a href="https://zmmagic.vercel.app" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-8">
+              <h3 class="text-3xl font-bold">Zmmagic Portfolio</h3>
+              <p class="text-gray-300 text-sm mt-3 mb-6 line-clamp-3">Aesthetic personal portfolio with strong visual identity and immersive experience.</p>
+              <a href="https://zmmagic.vercel.app" target="_blank" class="view-btn inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            </div>
           </div>
           <div class="p-8">
             <h3 class="text-2xl font-semibold">Zmmagic Portfolio</h3>
             <p style="color:var(--muted);" class="mt-3 text-sm line-clamp-2">A aesthetic website with strong visual identity.</p>
-            <a href="https://zmmagic.vercel.app" target="_blank" class="mt-4 inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-medium rounded-2xl transition-all shadow-lg hover:shadow-purple-500/50">View Project →</a>
+            <a href="https://zmmagic.vercel.app" target="_blank" class="mt-6 inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-semibold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-0.5">View Project <span class="text-lg">→</span></a>
           </div>
         </div>
 
@@ -816,7 +815,6 @@ footer {
     </div>
   </div>
 </div>
-
         
   <!-- Redesigned Contact Card -->
   <div class="card mt-20 mx-auto max-w-md bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl p-10 text-center shadow-2xl border border-purple-900/30">

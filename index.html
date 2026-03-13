@@ -901,13 +901,6 @@ footer {
 
 <script>
 
-module.exports = {
-  future: {
-    hoverOnlyWhenSupported: true,  // hover only on devices that can hover
-  },
-  // ... rest of config
-}
-
 // 1. Mouse glow
 document.addEventListener('mousemove', (e) => {
   const glow = document.querySelector('.mouse-glow');
@@ -1001,6 +994,13 @@ setInterval(createRing, 2800); // new ring every ~2.8 seconds
 // Create a few rings immediately so it doesn't start empty
 for (let i = 0; i < 4; i++) {
   setTimeout(createRing, i * 1200);
+}
+
+module.exports = {
+  future: {
+    hoverOnlyWhenSupported: true,  // hover only on devices that can hover
+  },
+  // ... rest of config
 }
 </script>
 

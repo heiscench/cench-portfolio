@@ -49,8 +49,61 @@
       position: relative;
       z-index: 2;
     }
+   {
+- {
+-   height: 100%;
+-   margin: 0;
+-   overflow-x: hidden;   /
+    * kills horizontal scroll/overflow */
+- }
 
- 
+-
+-.your-section-wrapper {
+    /* the div around Selected Work */
+-   background: url(...) center/cover no-repeat;
+-   background-attachment: fixed;
+-   position: relative;
+-   overflow: hidden;
+- }
+
+-
+-.projects-hero::before {
+    /* subtle overlay to improve text readability */
+-   content: '';
+-   position: absolute;
+-   inset: 0;
+-   background: rgba(0, 0, 0, 0.65); /
+    * dark tint so stars don't overpower text */
+-   z-index: 1;
+- }
+
+-
+-.projects-content {
+-   position: relative;
+-   z-index: 2;   /
+    * content above overlay */
+-   padding: 8rem 2rem;
+-   color: white;
+- }
+
+-
+-body, html {
+-   height: 100%;
+-   margin: 0;
+-   overflow-x: hidden;   /
+    * kills horizontal scroll/overflow */
+- }
+
+-
+-.your-section-wrapper {
+    /* the div around Selected Work */
+-   background: url(...) center/cover no-repeat;
+-   background-attachment: fixed;
+-   position: relative;
+-   overflow: hidden;
+
++   overflow: hidden;
++ }
 }
 
     /* === MOVING PURPLE RINGS BACKGROUND === */

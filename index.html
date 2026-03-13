@@ -42,6 +42,11 @@
       position: relative;
     }
 
+@media (max-width: 768px) {
+  .your-section-wrapper {
+    background-attachment: scroll;   /* or local */
+  }
+}
     .container {
       max-width: 1180px;
       margin: 0 auto;
@@ -49,62 +54,39 @@
       position: relative;
       z-index: 2;
     }
-   {
- {   height: 100%;
+   
+   /* Make sure the page takes full viewport height and kills unwanted horizontal scroll */
+html, body {
+  height: 100%;
   margin: 0;
- overflow-x: hidden;   /
-    * kills horizontal scroll/overflow */
- }
-
-
-your-section-wrapper {
-    /* the div around Selected Work */
-  background: url(...) center/cover no-repeat;-   background-attachment: fixed;
-  position: relative;
-   overflow: hidden;
- }
-
-
-.projects-hero::before {
-    /* subtle overlay to improve text readability */
-  content: '';
-  position: absolute;
-   inset: 0;
-   background: rgba(0, 0, 0, 0.65); /
-    * dark tint so stars don't overpower text */
-   z-index: 1;
- }
-
-
-.projects-content {
-   position: relative;
-   z-index: 2;   /
-    * content above overlay */
-  padding: 8rem 2rem;
-  color: white;
- }
-
-body, html {
-   height: 100%;
-   margin: 0;
-   overflow-x: hidden;   /
-    * kills horizontal scroll/overflow */
+  overflow-x: hidden;   /* kills horizontal scroll/overflow */
 }
 
-
+/* The wrapper div around your "Selected Work" / hero section */
 .your-section-wrapper {
-    /* the div around Selected Work */
-   background: url(...) center/cover no-repeat;
+  /* background image stays fixed while scrolling (parallax-like effect) */
+  background: url('your-stars-or-space-image.jpg') center/cover no-repeat;
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
+}
 
-+   overflow: hidden;
-+ }
-overflow-x: hidden;   /
-  /* kills horizontal scroll/overflow */
-- }
+/* Dark overlay pseudo-element to make white text readable over bright stars */
+.your-section-wrapper::before {   /* or .projects-hero::before if that's the class name */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);   /* dark tint – adjust 0.65 opacity if needed (0.5–0.7 common) */
+  z-index: 1;
+}
 
+/* The actual content (headings, text, etc.) that needs to sit above the overlay */
+.projects-content {   /* or whatever class wraps your text inside the hero */
+  position: relative;
+  z-index: 2;           /* above the overlay */
+  padding: 8rem 2rem;
+  color: white;
+}
 - .your-section-wrapper {
   /* the div around Selected Work */
 -   background: url(...) center/cover no-repeat;

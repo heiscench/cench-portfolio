@@ -900,6 +900,14 @@ footer {
 </div>
 
 <script>
+
+module.exports = {
+  future: {
+    hoverOnlyWhenSupported: true,  // hover only on devices that can hover
+  },
+  // ... rest of config
+}
+
 // 1. Mouse glow
 document.addEventListener('mousemove', (e) => {
   const glow = document.querySelector('.mouse-glow');

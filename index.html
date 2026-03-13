@@ -49,13 +49,17 @@
       position: relative;
       z-index: 2;
     }
-/* Add this to your stylesheet o
-projects-hero {
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;         /* kills horizontal scroll/overflow */
+}
+
+.your-section-wrapper {       /* the div around Selected Work */
+  background: url(...) center/cover no-repeat;
+  background-attachment: fixed;
   position: relative;
-  min-height: 100vh;          /* or 80vh for shorter hero */
-  background: url('YOUR_STARRY_IMAGE_URL.jpg') no-repeat center center / cover fixed;  /* replace with your actual image src */
-  background-attachment: fixed; /* optional parallax feel */
-  overflow: hidden;           /* prevents any child overflow */
+  overflow: hidden;
 }
 
 .projects-hero::before {      /* subtle overlay to improve text readability */

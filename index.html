@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cench – Fullstack Developer • Web3 Builder</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
-
   <style>
   :root {
     --accent: #8f5bff;
@@ -26,6 +24,8 @@
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+  html { scroll-behavior: smooth; }
+
   body {
     font-family: 'Inter', system-ui, sans-serif;
     background: var(--bg-dark);
@@ -34,17 +34,17 @@
     overflow-x: hidden;
   }
 
-  html, body { height: 100%; overflow-x: hidden; }
-
+  /* ── CONTAINER ── */
   .container {
+    width: 100%;
     max-width: 1180px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
     position: relative;
     z-index: 2;
   }
 
-  /* Rings background */
+  /* ── RINGS BG ── */
   .rings-bg {
     position: fixed;
     inset: 0;
@@ -64,13 +64,13 @@
   }
 
   @keyframes ringFloat {
-    0% { transform: translate(-50%,-50%) scale(0.4); opacity: 0; }
-    10% { opacity: 0.35; }
-    60% { opacity: 0.35; }
+    0%   { transform: translate(-50%,-50%) scale(0.4); opacity: 0; }
+    10%  { opacity: 0.35; }
+    60%  { opacity: 0.35; }
     100% { transform: translate(-50%,-50%) scale(2.8); opacity: 0; }
   }
 
-  /* Mouse glow */
+  /* ── MOUSE GLOW ── */
   .mouse-glow {
     position: fixed;
     width: 520px; height: 520px;
@@ -80,54 +80,58 @@
     transform: translate(-50%, -50%);
     opacity: 0.8;
     mix-blend-mode: screen;
-    transition: opacity 0.5s ease;
   }
 
-  @media (max-width: 768px) {
-    .mouse-glow, .rings-bg { opacity: 0.6; }
-  }
-
-  /* Header */
+  /* ── HEADER ── */
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 32px 0 80px;
+    padding: 28px 0 60px;
+    gap: 16px;
   }
 
   .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-family: 'Orbitron', monospace;
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
     font-weight: 700;
     letter-spacing: 1px;
     color: white;
+    flex-shrink: 0;
   }
 
   .dot {
-    width: 12px; height: 12px;
+    width: 10px; height: 10px;
+    flex-shrink: 0;
     background: var(--accent);
     border-radius: 50%;
-    box-shadow: 0 0 16px var(--accent), 0 0 32px rgba(143,91,255,0.4);
+    box-shadow: 0 0 16px var(--accent);
     animation: pulseGlow 3s infinite ease-in-out;
   }
 
   @keyframes pulseGlow {
     0%,100% { transform: scale(1); box-shadow: 0 0 16px var(--accent); }
-    50% { transform: scale(1.3); box-shadow: 0 0 32px var(--accent-glow); }
+    50%      { transform: scale(1.3); box-shadow: 0 0 32px var(--accent-glow); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: nowrap;
   }
 
   .nav-links a {
     color: white;
     text-decoration: none;
     background: linear-gradient(135deg, var(--accent), var(--accent-glow));
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 999px;
     font-weight: 600;
-    font-size: 0.95rem;
-    margin-left: 12px;
+    font-size: clamp(0.78rem, 2.5vw, 0.95rem);
+    white-space: nowrap;
     transition: var(--transition);
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   }
@@ -137,15 +141,15 @@
     box-shadow: 0 12px 30px rgba(143,91,255,0.35);
   }
 
-  /* Hero */
+  /* ── HERO ── */
   .hero {
-    padding: 40px 0 100px;
+    padding: 20px 0 80px;
     text-align: center;
   }
 
   .hero h1 {
     font-family: 'Orbitron', monospace;
-    font-size: clamp(3.5rem, 10vw, 7.5rem);
+    font-size: clamp(2.8rem, 12vw, 7.5rem);
     font-weight: 700;
     letter-spacing: -2px;
     background: linear-gradient(90deg, #fff, var(--accent-glow), #fff);
@@ -153,52 +157,53 @@
     background-clip: text;
     color: transparent;
     margin-bottom: 16px;
+    line-height: 1.1;
   }
 
   .hero .subtitle {
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 3.5vw, 1.4rem);
     color: var(--muted);
-    margin-bottom: 32px;
     max-width: 680px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.5;
+    margin: 0 auto 32px;
+    line-height: 1.6;
   }
 
-  .typing { color: var(--muted); font-size: 1.35rem; line-height: 1.6; }
+  .typing { color: var(--muted); }
   .typing::after { content: "|"; animation: blink 0.8s step-end infinite; }
   @keyframes blink { 50% { opacity: 0; } }
 
+  /* ── TAGS ── */
   .tags {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 8px;
+    margin-top: 20px;
   }
 
   .tag {
     background: rgba(143,91,255,0.12);
     color: var(--accent-glow);
-    padding: 8px 18px;
+    padding: 6px 14px;
     border-radius: 999px;
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
     border: 1px solid rgba(143,91,255,0.3);
     transition: var(--transition);
+    white-space: nowrap;
   }
 
   .tag:hover {
     background: rgba(143,91,255,0.25);
-    transform: scale(1.08);
+    transform: scale(1.06);
     box-shadow: 0 0 20px rgba(143,91,255,0.3);
   }
 
-  /* Cards */
+  /* ── CARDS ── */
   .card {
     background: linear-gradient(145deg, var(--card2), var(--card));
     border-radius: var(--radius);
-    padding: 32px;
-    margin: 32px 0;
+    padding: clamp(20px, 4vw, 32px);
+    margin: 24px 0;
     border: 1px solid rgba(143,91,255,0.15);
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
     transition: all 0.9s cubic-bezier(0.22,1,0.36,1);
@@ -217,17 +222,31 @@
     border-color: rgba(143,91,255,0.35);
   }
 
-  h2, h3 { font-family: 'Orbitron', monospace; margin-bottom: 16px; color: white; }
-  h3 { font-size: 1.5rem; }
+  h2, h3 {
+    font-family: 'Orbitron', monospace;
+    margin-bottom: 16px;
+    color: white;
+  }
 
-  .profile { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  h2 { font-size: clamp(1.3rem, 4vw, 2rem); }
+  h3 { font-size: clamp(1rem, 3.5vw, 1.5rem); }
+
+  /* ── PROFILE ── */
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
 
   .avatar {
-    width: 80px; height: 80px;
+    width: 70px; height: 70px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-glow), var(--accent-dark));
     box-shadow: 0 0 30px rgba(143,91,255,0.4);
     transition: var(--transition);
+    object-fit: cover;
   }
 
   .profile:hover .avatar {
@@ -235,8 +254,10 @@
     box-shadow: 0 0 50px rgba(143,91,255,0.6);
   }
 
+  /* ── SERVICE ── */
   .service {
-    padding: 20px; margin: 16px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
     background: rgba(0,0,0,0.25);
     border-radius: 12px;
     transition: var(--transition);
@@ -244,17 +265,19 @@
 
   .service:hover {
     background: rgba(143,91,255,0.08);
-    transform: translateY(-6px);
+    transform: translateY(-4px);
   }
 
+  /* ── CTA BUTTONS ── */
   .cta {
     display: inline-block;
     background: linear-gradient(135deg, var(--accent), var(--accent-glow));
     color: white;
-    padding: 12px 24px;
+    padding: 12px 22px;
     border-radius: 999px;
     text-decoration: none;
     font-weight: 600;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
     margin-top: 12px;
     transition: var(--transition);
     box-shadow: 0 6px 20px rgba(0,0,0,0.5);
@@ -265,25 +288,22 @@
     box-shadow: 0 16px 40px rgba(143,91,255,0.35);
   }
 
-  .cta + .cta { margin-left: 16px; }
+  .cta + .cta { margin-left: 10px; }
 
-  /* Video embed */
+  /* ── VIDEO ── */
   .project-card-media {
-    background: linear-gradient(145deg, var(--card2), var(--card));
-    border-radius: var(--radius);
-    padding: 32px;
-    margin: 32px 0;
-    border: 1px solid rgba(143,91,255,0.15);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    transition: all 0.9s cubic-bezier(0.22,1,0.36,1);
-    opacity: 0;
-    transform: translateY(40px) scale(0.96);
     position: relative;
     aspect-ratio: 16/9;
+    width: 100%;
     max-width: 720px;
-    margin: 32px auto;
+    margin: 24px auto;
     border-radius: 16px;
     overflow: hidden;
+    border: 1px solid rgba(143,91,255,0.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    transition: all 0.9s cubic-bezier(0.22,1,0.36,1);
   }
 
   .project-card-media.revealed {
@@ -296,23 +316,22 @@
     inset: 0; width: 100%; height: 100%; border: none;
   }
 
+  /* ── FOOTER ── */
   footer {
     text-align: center;
-    padding: 80px 0 40px;
+    padding: 60px 0 32px;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: clamp(0.78rem, 2vw, 0.9rem);
     position: relative;
     z-index: 1;
   }
 
-  /* ===== SELECTED WORK SECTION ===== */
-  .section-work {
-    padding: 60px 0;
-  }
+  /* ── SELECTED WORK ── */
+  .section-work { padding: 40px 0 60px; }
 
   .section-work-title {
     font-family: 'Orbitron', monospace;
-    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-size: clamp(1.6rem, 6vw, 3.5rem);
     font-weight: 700;
     text-align: center;
     background: linear-gradient(to right, #c084fc, #a78bfa, #f472b6);
@@ -320,30 +339,28 @@
     background-clip: text;
     color: transparent;
     margin-bottom: 12px;
+    line-height: 1.2;
   }
 
   .section-work-sub {
     text-align: center;
     color: var(--muted);
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     max-width: 500px;
-    margin: 0 auto 48px;
+    margin: 0 auto 40px;
     line-height: 1.6;
   }
 
+  /* ── PROJECTS GRID ── */
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
 
-  @media (max-width: 600px) {
-    .projects-grid { grid-template-columns: 1fr; }
-  }
-
-  /* Project card */
+  /* ── PROJECT CARD ── */
   .project-item {
-    border-radius: 20px;
+    border-radius: 16px;
     overflow: hidden;
     background: var(--card2);
     border: 1px solid rgba(143,91,255,0.15);
@@ -358,7 +375,6 @@
     transform: translateY(-6px);
   }
 
-  /* Image wrap */
   .project-img-wrap {
     position: relative;
     width: 100%;
@@ -367,18 +383,15 @@
   }
 
   .project-img-wrap img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
   }
 
-  .project-item:hover .project-img-wrap img {
-    transform: scale(1.06);
-  }
+  .project-item:hover .project-img-wrap img { transform: scale(1.06); }
 
-  /* Dark overlay on tap */
+  /* dark overlay on tap */
   .project-img-wrap::before {
     content: '';
     position: absolute;
@@ -389,15 +402,12 @@
     z-index: 1;
   }
 
-  .project-item.active .project-img-wrap::before {
-    opacity: 1;
-  }
+  .project-item.active .project-img-wrap::before { opacity: 1; }
 
-  /* Button on image — hidden by default */
+  /* tap button — centered on image */
   .project-tap-btn {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(0.85);
     z-index: 2;
     opacity: 0;
@@ -405,10 +415,10 @@
     transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
     background: linear-gradient(135deg, var(--accent), var(--accent-glow));
     color: white;
-    padding: 12px 28px;
+    padding: 10px 22px;
     border-radius: 999px;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
     text-decoration: none;
     white-space: nowrap;
     box-shadow: 0 8px 30px rgba(143,91,255,0.5);
@@ -420,24 +430,24 @@
     transform: translate(-50%, -50%) scale(1);
   }
 
-  /* Overlay caption — always visible at bottom */
+  /* caption always visible at bottom */
   .project-overlay {
-    padding: 16px 20px;
+    padding: 14px 16px;
     background: linear-gradient(145deg, var(--card2), var(--card));
     border-top: 1px solid rgba(143,91,255,0.1);
   }
 
   .project-overlay h3 {
     font-family: 'Orbitron', monospace;
-    font-size: 1rem;
+    font-size: clamp(0.78rem, 2.5vw, 1rem);
     font-weight: 700;
     color: white;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .project-overlay p {
     color: var(--muted);
-    font-size: 0.85rem;
+    font-size: clamp(0.72rem, 2vw, 0.85rem);
     line-height: 1.5;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -445,15 +455,16 @@
     overflow: hidden;
   }
 
-  /* Contact card */
+  /* ── CONTACT CARD ── */
   .contact-card {
-    max-width: 28rem;
-    margin: 5rem auto 0;
+    max-width: 480px;
+    width: 100%;
+    margin: 4rem auto 0;
     background: linear-gradient(to bottom right, #18181b, #27272a);
     border-radius: 24px;
-    padding: 2.5rem;
+    padding: clamp(24px, 5vw, 40px);
     text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     border: 1px solid rgba(143,91,255,0.25);
     opacity: 0;
     transform: translateY(40px);
@@ -461,17 +472,51 @@
   }
 
   .contact-card.revealed { opacity: 1; transform: translateY(0); }
+  .contact-card h3 { font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: 12px; }
+  .contact-card p { color: var(--muted); font-size: clamp(0.85rem, 2.5vw, 1rem); margin-bottom: 24px; line-height: 1.6; }
 
-  .contact-card h3 { font-size: 1.8rem; margin-bottom: 1rem; }
-  .contact-card p { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6; }
+  .contact-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-  .contact-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  /* ══════════════════════════════
+     RESPONSIVE BREAKPOINTS
+  ══════════════════════════════ */
 
-  @media (max-width: 768px) {
-    header { padding: 24px 0 60px; }
-    .hero { padding: 20px 0 80px; }
-    .hero h1 { font-size: clamp(3rem, 12vw, 5.5rem); }
-    .card { padding: 24px; }
+  /* Large desktop 1200px+ — 3 col grid */
+  @media (min-width: 1200px) {
+    .projects-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Tablet landscape 768–1199px — 2 col */
+  @media (max-width: 1199px) and (min-width: 768px) {
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Tablet portrait 480–767px */
+  @media (max-width: 767px) {
+    .container { padding: 0 16px; }
+    header { padding: 20px 0 48px; }
+    .hero { padding: 10px 0 60px; }
+    .projects-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .cta + .cta { margin-left: 0; margin-top: 8px; }
+  }
+
+  /* Small phone 360–479px — single col */
+  @media (max-width: 479px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .nav-links a { padding: 7px 12px; }
+    .contact-btns { flex-direction: column; align-items: center; }
+    .cta { width: 100%; text-align: center; margin-left: 0; }
+  }
+
+  /* Very small 320px */
+  @media (max-width: 359px) {
+    .logo { font-size: 1rem; }
+    .nav-links a { font-size: 0.72rem; padding: 6px 10px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -520,7 +565,7 @@
   <div class="card profile">
     <img src="cench.jpg" alt="Cench" class="avatar">
     <div>
-      <strong style="font-size:1.4rem;">Cench</strong><br><br>
+      <strong style="font-size:clamp(1.1rem,3vw,1.4rem);">Cench</strong><br><br>
       <span class="tag">Fullstack</span>
       <span class="tag">Web3</span>
       <span class="tag">Available for hire</span>
@@ -529,14 +574,14 @@
 
   <div class="card">
     <h3>Quick Bio</h3>
-    <p style="color:var(--muted); line-height:1.7;">
+    <p style="color:var(--muted); line-height:1.7; font-size:clamp(0.88rem,2.5vw,1rem);">
       Fullstack Developer & Web3 Builder. I don't just build the frontend — I build the whole product. UI, backend, APIs, databases, authentication, and blockchain-ready interfaces. Clean code, premium design, shipped fast.
     </p>
   </div>
 
   <div class="card">
     <h3>What I Do</h3>
-    <ul style="color:var(--muted); line-height:2; padding-left:24px;">
+    <ul style="color:var(--muted); line-height:2; padding-left:20px; font-size:clamp(0.85rem,2.5vw,1rem);">
       <li>Complete fullstack web applications (frontend + backend + database)</li>
       <li>REST APIs, server logic, and authentication systems</li>
       <li>High-converting landing pages & product websites</li>
@@ -548,7 +593,7 @@
 
   <div class="card">
     <h3>Tech Stack</h3>
-    <p style="color:var(--muted); line-height:1.7; margin-bottom:16px;">I work across the full stack — not just one layer.</p>
+    <p style="color:var(--muted); line-height:1.7; margin-bottom:14px; font-size:clamp(0.85rem,2.5vw,1rem);">I work across the full stack — not just one layer.</p>
     <div class="tags" style="justify-content:flex-start;">
       <span class="tag">React</span>
       <span class="tag">Next.js</span>
@@ -570,7 +615,7 @@
 
     <div class="service">
       <strong>Fullstack Web Applications</strong>
-      <p style="color:var(--muted); margin:12px 0;">Complete products — frontend, backend, database, auth, and deployment. Built to scale.</p>
+      <p style="color:var(--muted); margin:10px 0; font-size:clamp(0.82rem,2.5vw,0.95rem);">Complete products — frontend, backend, database, auth, and deployment. Built to scale.</p>
       <span class="tag">React</span>
       <span class="tag">Node.js</span>
       <span class="tag">Supabase</span>
@@ -579,7 +624,7 @@
 
     <div class="service">
       <strong>Landing Pages & Promo Sites</strong>
-      <p style="color:var(--muted); margin:12px 0;">High-converting pages built for speed, clarity, and strong CTAs. Shipped fast.</p>
+      <p style="color:var(--muted); margin:10px 0; font-size:clamp(0.82rem,2.5vw,0.95rem);">High-converting pages built for speed, clarity, and strong CTAs. Shipped fast.</p>
       <span class="tag">Conversion</span>
       <span class="tag">Responsive</span>
       <span class="tag">Motion</span>
@@ -587,7 +632,7 @@
 
     <div class="service">
       <strong>Web3 Interfaces</strong>
-      <p style="color:var(--muted); margin:12px 0;">Wallet-connected UIs, NFT platforms, DeFi dashboards, and token launch sites.</p>
+      <p style="color:var(--muted); margin:10px 0; font-size:clamp(0.82rem,2.5vw,0.95rem);">Wallet-connected UIs, NFT platforms, DeFi dashboards, and token launch sites.</p>
       <span class="tag">Web3</span>
       <span class="tag">NFT</span>
       <span class="tag">DeFi</span>
@@ -596,7 +641,7 @@
 
     <div class="service">
       <strong>SaaS Products</strong>
-      <p style="color:var(--muted); margin:12px 0;">Full-stack SaaS with auth, user dashboards, payment integration, and real-time features.</p>
+      <p style="color:var(--muted); margin:10px 0; font-size:clamp(0.82rem,2.5vw,0.95rem);">Full-stack SaaS with auth, user dashboards, payment integration, and real-time features.</p>
       <span class="tag">SaaS</span>
       <span class="tag">Auth</span>
       <span class="tag">Payments</span>
@@ -604,27 +649,23 @@
     </div>
   </div>
 
-  <!-- Past Works Video -->
   <div class="card" style="text-align:center;">
     <h2>Past Works</h2>
   </div>
 
   <div class="project-card-media">
-    <iframe
-      src="https://www.youtube.com/embed/3AskvTrCPQ4?rel=0"
+    <iframe src="https://www.youtube.com/embed/3AskvTrCPQ4?rel=0"
       allowfullscreen
       allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
     </iframe>
   </div>
 
-  <!-- Selected Work -->
   <div class="section-work">
     <h2 class="section-work-title">Selected Work</h2>
     <p class="section-work-sub">Full stack & Web3 projects built for impact, community, and unforgettable presence.</p>
 
     <div class="projects-grid">
 
-      <!-- Ignara -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="ignara.png" alt="Ignara">
@@ -636,7 +677,6 @@
         </div>
       </div>
 
-      <!-- Risk Calc -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="risk.png" alt="Risk Calc">
@@ -648,7 +688,6 @@
         </div>
       </div>
 
-      <!-- Reactify -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="Reactify.jpg" alt="Reactify">
@@ -660,7 +699,6 @@
         </div>
       </div>
 
-      <!-- Lunar Howl -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="lunar.jpg" alt="Lunar Howl">
@@ -672,7 +710,6 @@
         </div>
       </div>
 
-      <!-- Solana Daemon -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="dam.jpg" alt="Solana Daemon">
@@ -684,7 +721,6 @@
         </div>
       </div>
 
-      <!-- Nerd -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="nerd.jpg" alt="Nerd">
@@ -696,7 +732,6 @@
         </div>
       </div>
 
-      <!-- Solana Druglords -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="drug.jpg" alt="Solana Druglords">
@@ -708,7 +743,6 @@
         </div>
       </div>
 
-      <!-- Connor Portfolio -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="connor.jpg" alt="Connor Portfolio">
@@ -720,7 +754,6 @@
         </div>
       </div>
 
-      <!-- Zmmagic -->
       <div class="project-item" onclick="toggleBtn(this)">
         <div class="project-img-wrap">
           <img src="magic.jpg" alt="Zmmagic Portfolio">
@@ -735,7 +768,6 @@
     </div>
   </div>
 
-  <!-- Contact -->
   <div class="contact-card">
     <h3>Let's Build Something Legendary</h3>
     <p>Fullstack projects, Web3 builds, SaaS products, landing pages.<br>If you have a vision — I'll engineer it into reality.</p>
@@ -745,9 +777,7 @@
     </div>
   </div>
 
-  <footer>
-    © 2026 Cench — Fullstack Developer & Web3 Builder
-  </footer>
+  <footer>© 2026 Cench — Fullstack Developer & Web3 Builder</footer>
 
 </div>
 
@@ -760,62 +790,54 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Scroll reveal
-const revealElements = document.querySelectorAll('.card, .hero, .project-card-media, .contact-card');
 const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry, index) => {
+  entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('revealed'), index * 90);
+      setTimeout(() => entry.target.classList.add('revealed'), i * 90);
       revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1, rootMargin: "0px 0px -100px 0px" });
-revealElements.forEach(el => revealObserver.observe(el));
+}, { threshold: 0.08, rootMargin: "0px 0px -60px 0px" });
 
-// 3D Tilt
-VanillaTilt.init(document.querySelectorAll('.card, .project-card-media'), {
-  max: 12, speed: 500, glare: true, "max-glare": 0.4, scale: 1.03, perspective: 1000, transition: true
-});
+document.querySelectorAll('.card, .project-card-media, .contact-card').forEach(el => revealObserver.observe(el));
 
-// Typing animation
-const typingElement = document.getElementById('typing-text');
-const fullText = "I build complete digital products — frontend, backend, APIs, databases, and Web3 interfaces. Not just the pretty part. The whole stack. Ships fast, looks premium, works at scale.";
-let charIndex = 0;
-
-function typeWriter() {
-  if (charIndex < fullText.length) {
-    typingElement.textContent += fullText.charAt(charIndex);
-    charIndex++;
-    setTimeout(typeWriter, 28);
-  }
+// 3D Tilt — desktop only
+if (window.innerWidth > 768) {
+  VanillaTilt.init(document.querySelectorAll('.card, .project-card-media'), {
+    max: 10, speed: 500, glare: true, "max-glare": 0.3, scale: 1.02, perspective: 1000, transition: true
+  });
 }
 
-const heroObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    setTimeout(typeWriter, 600);
-    heroObserver.disconnect();
+// Typing
+const typingEl = document.getElementById('typing-text');
+const fullText = "I build complete digital products — frontend, backend, APIs, databases, and Web3 interfaces. Not just the pretty part. The whole stack. Ships fast, looks premium, works at scale.";
+let idx = 0;
+function typeWriter() {
+  if (idx < fullText.length) {
+    typingEl.textContent += fullText.charAt(idx++);
+    setTimeout(typeWriter, 26);
   }
-}, { threshold: 0.3 });
-heroObserver.observe(document.querySelector('.hero'));
+}
+new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { setTimeout(typeWriter, 500); }
+}, { threshold: 0.3 }).observe(document.querySelector('.hero'));
 
-// Moving rings
+// Rings
 function createRing() {
-  const ring = document.createElement('div');
-  ring.classList.add('ring');
-  const size = Math.random() * 300 + 200;
-  ring.style.width = size + 'px';
-  ring.style.height = size + 'px';
-  ring.style.left = Math.random() * window.innerWidth + 'px';
-  ring.style.top = Math.random() * window.innerHeight + 'px';
-  const duration = Math.random() * 18 + 16;
-  ring.style.animationDuration = duration + 's';
-  ring.style.animationDelay = Math.random() * 8 + 's';
-  document.getElementById('rings').appendChild(ring);
-  setTimeout(() => ring.remove(), (duration + 2) * 1000);
+  const r = document.createElement('div');
+  r.className = 'ring';
+  const s = Math.random() * 300 + 200;
+  r.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*window.innerWidth}px;top:${Math.random()*window.innerHeight}px`;
+  const d = Math.random() * 18 + 16;
+  r.style.animationDuration = d + 's';
+  r.style.animationDelay = Math.random() * 8 + 's';
+  document.getElementById('rings').appendChild(r);
+  setTimeout(() => r.remove(), (d + 2) * 1000);
 }
 setInterval(createRing, 2800);
 for (let i = 0; i < 4; i++) setTimeout(createRing, i * 1200);
 
-// Tap to reveal button
+// Tap to reveal
 function toggleBtn(card) {
   document.querySelectorAll('.project-item').forEach(item => {
     if (item !== card) item.classList.remove('active');
@@ -823,7 +845,6 @@ function toggleBtn(card) {
   card.classList.toggle('active');
 }
 
-// Close on outside tap
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.project-item')) {
     document.querySelectorAll('.project-item').forEach(item => item.classList.remove('active'));

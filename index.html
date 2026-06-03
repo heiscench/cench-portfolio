@@ -1,823 +1,673 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Michael — Fullstack Developer & Web3 Builder</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
-    :root {
-      --g: #00ff41;
-      --g2: #39ff6e;
-      --g3: #00e635;
-      --g-dim: rgba(0,255,65,0.12);
-      --g-glow: rgba(0,255,65,0.35);
-      --bg: #010803;
-      --bg2: #050f07;
-      --card: rgba(6,14,8,0.85);
-      --text: #d8edd9;
-      --muted: #5a8c63;
-      --border: rgba(0,255,65,0.1);
-    }
-
-    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-
-    body {
-      font-family: 'Syne', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    /* ── CUSTOM CURSOR ── */
-    .cursor {
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      mix-blend-mode: screen;
-    }
-    .cursor-dot {
-      width: 8px; height: 8px;
-      background: var(--g);
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: transform 0.1s;
-      box-shadow: 0 0 12px var(--g), 0 0 30px rgba(0,255,65,0.4);
-    }
-    .cursor-ring {
-      width: 36px; height: 36px;
-      border: 1.5px solid var(--g);
-      border-radius: 50%;
-      transform: translate(-50%,-50%);
-      transition: all 0.15s ease;
-      opacity: 0.6;
-    }
-
-    /* ── THREE.JS CANVAS ── */
-    #three-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ── SCANLINE OVERLAY ── */
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.03) 2px,
-        rgba(0,0,0,0.03) 4px
-      );
-    }
-
-    /* ── VIGNETTE ── */
-    .vignette {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
-    }
-
-    /* ── LAYOUT ── */
-    .wrap {
-      position: relative;
-      z-index: 10;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 32px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(12px);
-      background: rgba(1,8,3,0.7);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: 'Space Mono', monospace;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      color: var(--g);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .nav-pulse {
-      width: 7px; height: 7px;
-      background: var(--g);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--g);
-      animation: npulse 2s ease-in-out infinite;
-    }
-
-    @keyframes npulse {
-      0%,100% { opacity:1; transform: scale(1); }
-      50% { opacity:0.4; transform: scale(0.7); }
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 6px;
-    }
-
-    .nav-links a {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 7px 14px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      transition: all 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: var(--g);
-      border-color: var(--g);
-      box-shadow: 0 0 16px rgba(0,255,65,0.15), inset 0 0 16px rgba(0,255,65,0.05);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding-top: 80px;
-    }
-
-    .hero-inner {
-      padding: 80px 0 60px;
-    }
-
-    .hero-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--g);
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .hero-label::before {
-      content: '';
-      display: block;
-      width: 40px; height: 1px;
-      background: var(--g);
-      box-shadow: 0 0 8px var(--g);
-    }
-
-    .hero-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(4.5rem, 14vw, 10rem);
-      line-height: 0.9;
-      letter-spacing: -4px;
-      color: white;
-      margin-bottom: 12px;
-      position: relative;
-    }
-
-    .hero-name span {
-      display: block;
-      background: linear-gradient(135deg, #fff 0%, var(--g2) 50%, var(--g) 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-name .glitch-line {
-      position: relative;
-    }
-
-    .hero-name .glitch-line::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 3px; top: 0;
-      color: var(--g);
-      opacity: 0;
-      clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
-      animation: glitch 8s infinite;
-    }
-
-    @keyframes glitch {
-      0%,90%,100% { opacity: 0; transform: translate(0); }
-      91% { opacity: 0.8; transform: translate(-4px, 0); }
-      92% { opacity: 0; }
-      93% { opacity: 0.6; transform: translate(4px, 0); }
-      94% { opacity: 0; }
-    }
-
-    .hero-role {
-      font-family: 'Space Mono', monospace;
-      font-size: clamp(0.8rem, 2vw, 1.1rem);
-      color: var(--muted);
-      letter-spacing: 2px;
-      margin: 28px 0 40px;
-      line-height: 1.7;
-    }
-
-    .hero-role .accent { color: var(--g); }
-
-    .hero-cta {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      background: var(--g);
-      color: #010803;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.82rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-decoration: none;
-      font-weight: 700;
-      border-radius: 4px;
-      transition: all 0.3s;
-      box-shadow: 0 0 30px rgba(0,255,65,0.3);
-    }
-
-    .btn-primary:hover {
-      background: var(--g2);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0,255,65,0.4);
-    }
-
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 32px;
-      border: 1px solid var(--g);
-      color: var(--g);
-      font-family: 'Space Mono', monospace;
-      font-size: 0.82rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 4px;
-      transition: all 0.3s;
-    }
-
-    .btn-outline:hover {
-      background: rgba(0,255,65,0.08);
-      transform: translateY(-3px);
-      box-shadow: 0 0 24px rgba(0,255,65,0.2);
-    }
-
-    /* ── SCROLL INDICATOR ── */
-    .scroll-hint {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--muted);
-      animation: bounceDown 2s ease-in-out infinite;
-    }
-
-    .scroll-hint::after {
-      content: '';
-      width: 1px;
-      height: 50px;
-      background: linear-gradient(to bottom, var(--muted), transparent);
-    }
-
-    @keyframes bounceDown {
-      0%,100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(8px); }
-    }
-
-    /* ── SECTION SHARED ── */
-    section {
-      padding: 100px 0;
-    }
-
-    .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--g);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-label::before {
-      content: '';
-      width: 30px; height: 1px;
-      background: var(--g);
-    }
-
-    .section-title {
-      font-weight: 800;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      line-height: 1.05;
-      letter-spacing: -2px;
-      color: white;
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.7;
-      max-width: 500px;
-      margin-bottom: 60px;
-    }
-
-    /* ── GLASS CARD ── */
-    .glass {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      backdrop-filter: blur(20px);
-      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .glass:hover {
-      border-color: rgba(0,255,65,0.25);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,255,65,0.08);
-      transform: translateY(-4px);
-    }
-
-    /* ── ABOUT ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .about-bio {
-      grid-column: 1 / -1;
-      padding: 36px 40px;
-    }
-
-    .about-bio p {
-      color: var(--muted);
-      line-height: 1.9;
-      font-size: 1.05rem;
-      max-width: 680px;
-    }
-
-    .about-bio p em {
-      color: var(--g);
-      font-style: normal;
-      font-weight: 600;
-    }
-
-    .stat-card {
-      padding: 28px 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .stat-num {
-      font-family: 'Space Mono', monospace;
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--g);
-      line-height: 1;
-      text-shadow: 0 0 30px rgba(0,255,65,0.4);
-    }
-
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 1px;
-    }
-
-    /* ── STACK ── */
-    .stack-section { padding: 100px 0; }
-
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-      margin-top: 48px;
-    }
-
-    .tech-pill {
-      padding: 14px 16px;
-      text-align: center;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 1px;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: rgba(0,255,65,0.03);
-      transition: all 0.3s;
-      cursor: default;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tech-pill::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent, rgba(0,255,65,0.06));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .tech-pill:hover {
-      color: var(--g);
-      border-color: rgba(0,255,65,0.35);
-      box-shadow: 0 0 20px rgba(0,255,65,0.12);
-      transform: translateY(-2px);
-    }
-
-    .tech-pill:hover::before { opacity: 1; }
-
-    /* ── SERVICES ── */
-    .services-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 48px;
-    }
-
-    .service-card {
-      padding: 36px 32px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .service-card::before {
-      content: attr(data-num);
-      position: absolute;
-      top: -10px; right: 20px;
-      font-family: 'Space Mono', monospace;
-      font-size: 5rem;
-      font-weight: 700;
-      color: rgba(0,255,65,0.04);
-      line-height: 1;
-      pointer-events: none;
-      transition: color 0.4s;
-    }
-
-    .service-card:hover::before {
-      color: rgba(0,255,65,0.08);
-    }
-
-    .service-icon {
-      font-size: 1.8rem;
-      margin-bottom: 18px;
-      display: block;
-    }
-
-    .service-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-
-    .service-desc {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 18px;
-    }
-
-    .service-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .stag {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border: 1px solid rgba(0,255,65,0.2);
-      border-radius: 3px;
-      color: var(--g);
-      background: rgba(0,255,65,0.04);
-    }
-
-    /* ── PROJECTS ── */
-    .projects-section { padding: 100px 0; }
-
-    .video-feature {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      margin: 48px 0;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,65,0.06);
-    }
-
-    .video-feature iframe {
-      position: absolute;
-      inset: 0; width: 100%; height: 100%; border: none;
-    }
-
-    .video-label {
-      position: absolute;
-      top: 16px; left: 16px;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: rgba(0,255,65,0.9);
-      color: #010803;
-      padding: 5px 12px;
-      border-radius: 3px;
-      z-index: 2;
-      font-weight: 700;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .proj-card {
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--bg2);
-      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
-      group: true;
-    }
-
-    .proj-card:hover {
-      border-color: rgba(0,255,65,0.3);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(0,255,65,0.08);
-      transform: translateY(-6px) scale(1.01);
-    }
-
-    .proj-img {
-      width: 100%;
-      aspect-ratio: 16/10;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .proj-img img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
-      filter: saturate(0.8);
-    }
-
-    .proj-card:hover .proj-img img {
-      transform: scale(1.08);
-      filter: saturate(1);
-    }
-
-    .proj-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.9) 100%);
-    }
-
-    .proj-link {
-      position: absolute;
-      bottom: 12px; right: 12px;
-      width: 36px; height: 36px;
-      background: var(--g);
-      color: #010803;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      opacity: 0;
-      transform: scale(0.7);
-      transition: all 0.3s;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .proj-card:hover .proj-link {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .proj-body {
-      padding: 16px 18px 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .proj-title {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: white;
-      margin-bottom: 5px;
-      letter-spacing: -0.3px;
-    }
-
-    .proj-desc {
-      color: var(--muted);
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-
-    /* ── CONTACT ── */
-    .contact-section { padding: 100px 0 120px; }
-
-    .contact-inner {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .contact-inner .section-label {
-      justify-content: center;
-    }
-
-    .contact-inner .section-label::before { display: none; }
-
-    .contact-tagline {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -2px;
-      color: white;
-      line-height: 1.1;
-      margin: 16px 0 12px;
-    }
-
-    .contact-tagline span {
-      background: linear-gradient(90deg, var(--g), var(--g2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .contact-sub {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.7;
-      margin-bottom: 48px;
-    }
-
-    .contact-btns {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    /* ── DIVIDER ── */
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--border), transparent);
-      margin: 0 auto;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 24px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 2px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      position: relative;
-      z-index: 10;
-    }
-
-    /* ── REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── TERMINAL LINE ── */
-    .terminal {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.78rem;
-      color: var(--g);
-      background: rgba(0,255,65,0.04);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 20px 24px;
-      line-height: 2;
-      margin-top: 40px;
-    }
-
-    .terminal .prompt { color: var(--muted); }
-    .terminal .cmd { color: white; }
-    .terminal .out { color: var(--g); }
-
-    .t-cursor {
-      display: inline-block;
-      width: 8px; height: 1.1em;
-      background: var(--g);
-      vertical-align: text-bottom;
-      animation: tblink 0.9s step-end infinite;
-    }
-
-    @keyframes tblink { 50% { opacity: 0; } }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .about-bio { grid-column: 1; }
-      .services-grid { grid-template-columns: 1fr; }
-      .projects-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 600px) {
-      nav { padding: 16px 20px; }
-      .wrap { padding: 0 20px; }
-      .hero-name { letter-spacing: -2px; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      footer { flex-direction: column; gap: 8px; text-align: center; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Michael — Fullstack Developer & Web3 Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root {
+  --g: #00ff41;
+  --g2: #39ff6e;
+  --g3: rgba(0,255,65,0.08);
+  --bg: #010803;
+  --bg2: #050f07;
+  --text: #e2ece3;
+  --muted: #4d7a56;
+  --card-bg: rgba(7,16,9,0.9);
+  --border: rgba(0,255,65,0.09);
+  --radius: 28px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+#cursor-outer {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1.5px solid rgba(0,255,65,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, border-color .3s;
+  mix-blend-mode: screen;
+}
+#cursor-inner {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--g);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 10px var(--g);
+  mix-blend-mode: screen;
+}
+body:hover #cursor-outer { opacity:1; }
+
+/* THREE.JS CANVAS */
+#bg-canvas {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* NOISE GRAIN */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* LAYOUT */
+.page {
+  position: relative;
+  z-index: 10;
+}
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 22px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(1,8,3,0.6);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--g);
+  box-shadow: 0 0 14px var(--g);
+  animation: pdot 2.5s ease-in-out infinite;
+}
+@keyframes pdot {
+  0%,100% { transform: scale(1); opacity:1; }
+  50% { transform: scale(0.5); opacity: 0.4; }
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+.nav-links a:hover {
+  color: var(--g);
+  background: rgba(0,255,65,0.07);
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 90px;
+  position: relative;
+}
+
+.hero-wrap {
+  padding: 80px 0 100px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,255,65,0.07);
+  border: 1px solid rgba(0,255,65,0.15);
+  border-radius: 100px;
+  padding: 8px 18px 8px 12px;
+  margin-bottom: 36px;
+}
+.hero-eyebrow .badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--g);
+  box-shadow: 0 0 8px var(--g);
+  animation: pdot 2s infinite;
+}
+.hero-eyebrow span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--g);
+  letter-spacing: 0.5px;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(5rem, 16vw, 12rem);
+  line-height: 0.88;
+  letter-spacing: 2px;
+  color: white;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.hero-title .line2 {
+  background: linear-gradient(90deg, var(--g), var(--g2), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: block;
+}
+
+.hero-desc {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 520px;
+  margin: 32px 0 44px;
+}
+.hero-desc strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  background: var(--g);
+  color: #010803;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 0 40px rgba(0,255,65,0.25);
+  letter-spacing: 0.3px;
+}
+.btn-solid:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 50px rgba(0,255,65,0.35);
+  background: var(--g2);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 34px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.12);
+  text-decoration: none;
+  transition: all 0.3s;
+  letter-spacing: 0.3px;
+}
+.btn-ghost:hover {
+  border-color: var(--g);
+  color: var(--g);
+  background: rgba(0,255,65,0.05);
+  transform: translateY(-3px);
+}
+
+/* SECTION SHARED */
+section { padding: 120px 0; }
+
+.sec-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-bottom: 14px;
+}
+
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.sec-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 460px;
+  margin-bottom: 64px;
+}
+
+/* CARDS */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(20px);
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.45s cubic-bezier(0.22,1,0.36,1),
+              border-color 0.3s;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,255,65,0.1);
+  border-color: rgba(0,255,65,0.2);
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 20px;
+}
+
+.about-main {
+  grid-row: 1 / 3;
+  padding: 48px 52px;
+}
+
+.about-main p {
+  font-size: 1.08rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.95;
+}
+.about-main p em {
+  font-style: normal;
+  color: var(--text);
+  font-weight: 500;
+}
+.about-main p strong {
+  color: var(--g);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.stat-box {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--g);
+  text-shadow: 0 0 40px rgba(0,255,65,0.3);
+  letter-spacing: 2px;
+}
+.stat-lbl {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+/* STACK */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+  gap: 10px;
+  margin-top: 56px;
+}
+
+.tech-chip {
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(0,255,65,0.03);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  text-align: center;
+  transition: all 0.3s;
+  cursor: default;
+  letter-spacing: 0.3px;
+}
+.tech-chip:hover {
+  background: rgba(0,255,65,0.08);
+  border-color: rgba(0,255,65,0.3);
+  color: var(--g);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,255,65,0.1);
+}
+
+/* SERVICES */
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.svc {
+  padding: 44px 44px;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.svc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at top left, rgba(0,255,65,0.05), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.svc:hover::after { opacity: 1; }
+
+.svc-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 3px;
+  color: var(--g);
+  margin-bottom: 22px;
+  display: block;
+}
+.svc-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 1px;
+  color: white;
+  line-height: 1.05;
+  margin-bottom: 14px;
+}
+.svc-desc {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 22px;
+}
+.svc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: rgba(0,255,65,0.06);
+  border: 1px solid rgba(0,255,65,0.15);
+  color: var(--g);
+  letter-spacing: 0.5px;
+}
+
+/* VIDEO */
+.video-wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 56px 0;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.6);
+}
+.video-wrap iframe {
+  position: absolute;
+  inset:0; width:100%; height:100%; border:none;
+}
+.video-badge {
+  position: absolute;
+  top:18px; left:18px;
+  z-index:2;
+  background: var(--g);
+  color: #010803;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+}
+
+/* PROJECTS */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+}
+
+.proj-card {
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+.proj-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  border-color: rgba(0,255,65,0.25);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,255,65,0.08);
+}
+
+.proj-img {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  position: relative;
+}
+.proj-img img {
+  width:100%; height:100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.4s;
+  filter: saturate(0.7) brightness(0.85);
+}
+.proj-card:hover .proj-img img {
+  transform: scale(1.08);
+  filter: saturate(1) brightness(1);
+}
+
+.proj-overlay {
+  position: absolute;
+  inset:0;
+  background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.85));
+}
+
+.proj-visit {
+  position: absolute;
+  bottom: 14px; right: 14px;
+  background: var(--g);
+  color: #010803;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 100px;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.3s;
+}
+.proj-card:hover .proj-visit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.proj-info {
+  padding: 18px 20px 22px;
+  border-top: 1px solid var(--border);
+}
+.proj-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: white;
+  margin-bottom: 4px;
+}
+.proj-desc {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* CONTACT */
+.contact-box {
+  text-align: center;
+  padding: 100px 60px;
+  border-radius: 40px;
+  background: linear-gradient(145deg, rgba(7,18,9,0.95), rgba(4,12,6,0.95));
+  border: 1px solid rgba(0,255,65,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.contact-box::before {
+  content: '';
+  position: absolute;
+  top: -60%; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,255,65,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.contact-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  letter-spacing: 2px;
+  color: white;
+  line-height: 0.95;
+  margin-bottom: 20px;
+}
+.contact-title span {
+  color: var(--g);
+}
+.contact-sub {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 48px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contact-btns {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+  position: relative;
+  z-index: 10;
+}
+
+/* REVEAL ANIMATION */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.on { opacity:1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-main { grid-row: auto; padding: 36px 32px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .proj-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 580px) {
+  nav { padding: 18px 20px; }
+  .wrap { padding: 0 20px; }
+  .nav-links { display: none; }
+  .proj-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+  .contact-box { padding: 60px 28px; }
+  .svc { padding: 32px 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cur-dot" style="position:fixed;top:0;left:0;">
-  <div class="cursor-dot"></div>
-</div>
-<div class="cursor" id="cur-ring" style="position:fixed;top:0;left:0;">
-  <div class="cursor-ring"></div>
-</div>
+<div id="cursor-outer"></div>
+<div id="cursor-inner"></div>
 
-<!-- Three.js canvas -->
-<canvas id="three-canvas"></canvas>
+<canvas id="bg-canvas"></canvas>
+<div class="grain"></div>
 
-<!-- Overlays -->
-<div class="scanlines"></div>
-<div class="vignette"></div>
+<div class="page">
 
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <span class="nav-pulse"></span>
+    <span class="dot"></span>
     Michael
   </div>
   <div class="nav-links">
@@ -830,69 +680,53 @@
 
 <!-- HERO -->
 <div class="wrap">
-  <section class="hero" style="position:relative;">
-    <div class="hero-inner">
-      <div class="hero-label">Available for hire</div>
-      <h1 class="hero-name">
-        <span class="glitch-line" data-text="Michael">Michael</span>
-      </h1>
-      <p class="hero-role">
-        <span class="accent">Fullstack Developer</span> × Web3 Builder<br>
-        Frontend · Backend · APIs · Databases · Blockchain
-      </p>
-      <div class="terminal">
-        <div><span class="prompt">$ </span><span class="cmd">whoami</span></div>
-        <div><span class="out">→ I build complete digital products. Not just the pretty part. The whole stack.</span></div>
-        <div><span class="prompt">$ </span><span class="cmd">status</span></div>
-        <div><span class="out">→ <span id="typed-status"></span><span class="t-cursor"></span></span></div>
+  <section class="hero">
+    <div class="hero-wrap">
+      <div class="hero-eyebrow">
+        <span class="badge-dot"></span>
+        <span>Available for hire — Open to new projects</span>
       </div>
-      <div class="hero-cta" style="margin-top:36px;">
-        <a href="#work" class="btn-primary">View My Work →</a>
-        <a href="https://x.com/M18AD_" target="_blank" class="btn-outline">Message on X</a>
+      <h1 class="hero-title">
+        Michael
+        <span class="line2">Builds.</span>
+      </h1>
+      <p class="hero-desc">
+        <strong>Fullstack Developer & Web3 Builder.</strong><br>
+        I don't just build the frontend — I build the whole product. UI, backend, APIs, databases, authentication, and blockchain-ready interfaces. Ships fast, looks premium, works at scale.
+      </p>
+      <div class="hero-actions">
+        <a href="#work" class="btn-solid">See My Work</a>
+        <a href="https://x.com/M18AD_" target="_blank" class="btn-ghost">Message on X ↗</a>
+        <a href="https://discord.com/users/1243900160426246248" target="_blank" class="btn-ghost">Discord ↗</a>
       </div>
     </div>
-    <div class="scroll-hint">Scroll</div>
   </section>
 </div>
 
 <!-- ABOUT -->
 <div class="wrap" id="about">
   <section>
-    <div class="section-label">About</div>
-    <h2 class="section-title reveal">The Whole Stack,<br>Not Half of It.</h2>
-    <p class="section-sub reveal">Clean code, premium design, shipped fast.</p>
+    <div class="sec-label reveal">About</div>
+    <h2 class="sec-title reveal">The Whole Stack.<br>Not Half of It.</h2>
 
     <div class="about-grid">
-      <div class="glass about-bio reveal">
+      <div class="card about-main reveal">
         <p>
-          I'm <em>Michael</em> — a Fullstack Developer & Web3 Builder who engineers
-          complete digital products from the ground up. UI to database, REST APIs to
-          authentication, <em>Web3 interfaces</em> to SaaS dashboards.
+          I'm <em>Michael</em> — a Fullstack Developer & Web3 Builder who engineers complete digital products from scratch.
           <br><br>
-          I don't hand off half a product. When I build, I build the <em>entire thing</em>:
-          frontend, backend, database, auth, and deployment. Clean architecture,
-          premium aesthetics, zero compromises. <em>Ships fast. Works at scale.</em>
+          From pixel-perfect <em>frontend UIs</em> to hardened <em>backend systems</em>, REST APIs, authentication, and <strong>blockchain-ready interfaces</strong> — I handle it all. When I build, I build the <em>entire thing</em>.
+          <br><br>
+          Clean architecture. <em>Premium aesthetics.</em> Zero compromises. If you have a vision, I'll engineer it into reality.
         </p>
       </div>
 
-      <div class="glass stat-card reveal">
-        <span class="stat-num">9+</span>
-        <span class="stat-label">Projects shipped</span>
+      <div class="card stat-box reveal">
+        <div class="stat-num">9+</div>
+        <div class="stat-lbl">Projects shipped & live</div>
       </div>
-
-      <div class="glass stat-card reveal">
-        <span class="stat-num">5</span>
-        <span class="stat-label">Web3 builds live</span>
-      </div>
-
-      <div class="glass stat-card reveal">
-        <span class="stat-num">∞</span>
-        <span class="stat-label">Full-stack depth</span>
-      </div>
-
-      <div class="glass stat-card reveal">
-        <span class="stat-num">0</span>
-        <span class="stat-label">Half-baked products</span>
+      <div class="card stat-box reveal">
+        <div class="stat-num">5</div>
+        <div class="stat-lbl">Web3 builds deployed</div>
       </div>
     </div>
   </section>
@@ -900,27 +734,27 @@
 
 <!-- STACK -->
 <div class="wrap" id="stack">
-  <section class="stack-section">
-    <div class="section-label">Tech Stack</div>
-    <h2 class="section-title reveal">I Work Across<br>the Entire Stack.</h2>
-
+  <section>
+    <div class="sec-label reveal">Tech Stack</div>
+    <h2 class="sec-title reveal">Full Stack.<br>Every Layer.</h2>
+    <p class="sec-sub reveal">Not just one layer — the entire product.</p>
     <div class="stack-grid reveal">
-      <div class="tech-pill">React</div>
-      <div class="tech-pill">Next.js</div>
-      <div class="tech-pill">TypeScript</div>
-      <div class="tech-pill">Node.js</div>
-      <div class="tech-pill">Supabase</div>
-      <div class="tech-pill">PostgreSQL</div>
-      <div class="tech-pill">REST APIs</div>
-      <div class="tech-pill">HTML / CSS</div>
-      <div class="tech-pill">Web3</div>
-      <div class="tech-pill">Solana</div>
-      <div class="tech-pill">Git & GitHub</div>
-      <div class="tech-pill">Vercel</div>
-      <div class="tech-pill">Firebase</div>
-      <div class="tech-pill">PWA</div>
-      <div class="tech-pill">DeFi UIs</div>
-      <div class="tech-pill">NFT Platforms</div>
+      <div class="tech-chip">React</div>
+      <div class="tech-chip">Next.js</div>
+      <div class="tech-chip">TypeScript</div>
+      <div class="tech-chip">Node.js</div>
+      <div class="tech-chip">Supabase</div>
+      <div class="tech-chip">PostgreSQL</div>
+      <div class="tech-chip">REST APIs</div>
+      <div class="tech-chip">HTML / CSS</div>
+      <div class="tech-chip">Web3 / Solana</div>
+      <div class="tech-chip">Git & GitHub</div>
+      <div class="tech-chip">Vercel</div>
+      <div class="tech-chip">Firebase</div>
+      <div class="tech-chip">DeFi UIs</div>
+      <div class="tech-chip">NFT Platforms</div>
+      <div class="tech-chip">PWA</div>
+      <div class="tech-chip">Auth Systems</div>
     </div>
   </section>
 </div>
@@ -928,86 +762,74 @@
 <!-- SERVICES -->
 <div class="wrap">
   <section>
-    <div class="section-label">Services</div>
-    <h2 class="section-title reveal">What I Build</h2>
-    <p class="section-sub reveal">Every type of digital product, engineered end-to-end.</p>
-
+    <div class="sec-label reveal">Services</div>
+    <h2 class="sec-title reveal">What I Build<br>For You.</h2>
     <div class="services-grid">
-      <div class="glass service-card reveal" data-num="01">
-        <span class="service-icon">⚡</span>
-        <div class="service-title">Fullstack Web Applications</div>
-        <p class="service-desc">Complete products — frontend, backend, database, auth, and deployment. Built to scale. Not just the UI.</p>
-        <div class="service-tags">
-          <span class="stag">React</span>
-          <span class="stag">Node.js</span>
-          <span class="stag">Supabase</span>
-          <span class="stag">APIs</span>
+
+      <div class="card svc reveal">
+        <span class="svc-num">01</span>
+        <div class="svc-title">Fullstack Web Applications</div>
+        <p class="svc-desc">Complete products — frontend, backend, database, auth, deployment. Built to scale. Not just the UI layer.</p>
+        <div class="svc-tags">
+          <span class="stag">React</span><span class="stag">Node.js</span><span class="stag">Supabase</span><span class="stag">APIs</span>
         </div>
       </div>
 
-      <div class="glass service-card reveal" data-num="02">
-        <span class="service-icon">🎯</span>
-        <div class="service-title">Landing Pages & Promo Sites</div>
-        <p class="service-desc">High-converting pages built for speed, clarity, and strong CTAs. Premium design, shipped fast.</p>
-        <div class="service-tags">
-          <span class="stag">Conversion</span>
-          <span class="stag">Responsive</span>
-          <span class="stag">Motion</span>
+      <div class="card svc reveal">
+        <span class="svc-num">02</span>
+        <div class="svc-title">Landing Pages & Promo Sites</div>
+        <p class="svc-desc">High-converting pages built for speed, clarity, and strong CTAs. Premium motion design, shipped fast.</p>
+        <div class="svc-tags">
+          <span class="stag">Conversion</span><span class="stag">Responsive</span><span class="stag">Motion</span>
         </div>
       </div>
 
-      <div class="glass service-card reveal" data-num="03">
-        <span class="service-icon">🔗</span>
-        <div class="service-title">Web3 Interfaces</div>
-        <p class="service-desc">Wallet-connected UIs, NFT platforms, DeFi dashboards, and token launch sites that drive virality.</p>
-        <div class="service-tags">
-          <span class="stag">Web3</span>
-          <span class="stag">NFT</span>
-          <span class="stag">DeFi</span>
-          <span class="stag">Solana</span>
+      <div class="card svc reveal">
+        <span class="svc-num">03</span>
+        <div class="svc-title">Web3 Interfaces</div>
+        <p class="svc-desc">Wallet-connected UIs, NFT platforms, DeFi dashboards, and token launch sites built to go viral.</p>
+        <div class="svc-tags">
+          <span class="stag">Web3</span><span class="stag">NFT</span><span class="stag">DeFi</span><span class="stag">Solana</span>
         </div>
       </div>
 
-      <div class="glass service-card reveal" data-num="04">
-        <span class="service-icon">🚀</span>
-        <div class="service-title">SaaS Products</div>
-        <p class="service-desc">Full-stack SaaS with auth, user dashboards, payment integration, and real-time features. Ship-ready.</p>
-        <div class="service-tags">
-          <span class="stag">SaaS</span>
-          <span class="stag">Auth</span>
-          <span class="stag">Payments</span>
-          <span class="stag">Dashboards</span>
+      <div class="card svc reveal">
+        <span class="svc-num">04</span>
+        <div class="svc-title">SaaS Products</div>
+        <p class="svc-desc">Full-stack SaaS with auth, dashboards, payment integration, and real-time features. Launch-ready.</p>
+        <div class="svc-tags">
+          <span class="stag">SaaS</span><span class="stag">Auth</span><span class="stag">Payments</span><span class="stag">Dashboards</span>
         </div>
       </div>
+
     </div>
   </section>
 </div>
 
 <!-- WORK -->
 <div class="wrap" id="work">
-  <section class="projects-section">
-    <div class="section-label">Selected Work</div>
-    <h2 class="section-title reveal">Past Works</h2>
-    <p class="section-sub reveal">Full-stack & Web3 projects built for impact, community, and unforgettable presence.</p>
+  <section>
+    <div class="sec-label reveal">Selected Work</div>
+    <h2 class="sec-title reveal">Past Works</h2>
+    <p class="sec-sub reveal">Fullstack & Web3 projects built for impact, community, and unforgettable presence.</p>
 
-    <div class="video-feature reveal">
-      <div class="video-label">▶ FEATURED</div>
+    <div class="video-wrap reveal">
+      <div class="video-badge">▶ Featured</div>
       <iframe src="https://www.youtube.com/embed/3AskvTrCPQ4?si=22dZwbk9OT6IsmsI"
-        allowfullscreen
-        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
+        allowfullscreen allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
       </iframe>
     </div>
 
-    <div class="projects-grid">
+    <div class="proj-grid">
 
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="ignara.png" alt="Ignara" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://ignara.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://ignara.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Ignara</div>
+        <div class="proj-info">
+          <div class="proj-name">Ignara</div>
           <div class="proj-desc">AI that builds your daily money plan. Your money. Your plan. Your freedom.</div>
         </div>
       </div>
@@ -1015,11 +837,11 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="risk.png" alt="Risk Calc" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://tradercalc.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://tradercalc.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Risk Calc</div>
+        <div class="proj-info">
+          <div class="proj-name">Risk Calc</div>
           <div class="proj-desc">Risk calculator for memecoin and forex traders. Precision tools for volatile markets.</div>
         </div>
       </div>
@@ -1027,11 +849,11 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="Reactify.jpg" alt="Reactify" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://reactiify.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://reactiify.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Reactify</div>
+        <div class="proj-info">
+          <div class="proj-name">Reactify</div>
           <div class="proj-desc">AI replies that sound human. Grow faster on X. Built for creators & crypto.</div>
         </div>
       </div>
@@ -1039,11 +861,11 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="lunar.jpg" alt="Lunar Howl" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://lunarhow.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://lunarhow.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Lunar Howl</div>
+        <div class="proj-info">
+          <div class="proj-name">Lunar Howl</div>
           <div class="proj-desc">Community-driven aesthetic hub with immersive visuals and strong DAO identity.</div>
         </div>
       </div>
@@ -1051,23 +873,23 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="dam.jpg" alt="Solana Daemon" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://daemon-xi.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://daemon-xi.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Solana Daemon</div>
-          <div class="proj-desc">High-impact Web3 launch site built for viral presence and seamless onboarding.</div>
+        <div class="proj-info">
+          <div class="proj-name">Solana Daemon</div>
+          <div class="proj-desc">High-impact Web3 launch site for viral presence and seamless onboarding.</div>
         </div>
       </div>
 
       <div class="proj-card reveal">
         <div class="proj-img">
-          <img src="nerd.jpg" alt="Nerd" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://nerdsnft.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <img src="nerd.jpg" alt="Nerd NFT" loading="lazy">
+          <div class="proj-overlay"></div>
+          <a href="https://nerdsnft.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Nerd NFT</div>
+        <div class="proj-info">
+          <div class="proj-name">Nerd NFT</div>
           <div class="proj-desc">Bold NFT collector platform emphasizing meme culture and instant community engagement.</div>
         </div>
       </div>
@@ -1075,11 +897,11 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="drug.jpg" alt="Solana Druglords" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://solana-druglords.github.io/solana-druglords/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Solana Druglords</div>
+        <div class="proj-info">
+          <div class="proj-name">Solana Druglords</div>
           <div class="proj-desc">Edgy Solana NFT drop site with gritty visuals and community-first mechanics.</div>
         </div>
       </div>
@@ -1087,23 +909,23 @@
       <div class="proj-card reveal">
         <div class="proj-img">
           <img src="connor.jpg" alt="Connor Portfolio" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://connor-olive.vercel.app/" target="_blank" class="proj-link">↗</a>
+          <div class="proj-overlay"></div>
+          <a href="https://connor-olive.vercel.app/" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Connor Portfolio</div>
-          <div class="proj-desc">Personal portfolio showcasing creative work with clean modern design.</div>
+        <div class="proj-info">
+          <div class="proj-name">Connor Portfolio</div>
+          <div class="proj-desc">Personal portfolio with clean modern design and strong visual hierarchy.</div>
         </div>
       </div>
 
       <div class="proj-card reveal">
         <div class="proj-img">
-          <img src="magic.jpg" alt="Zmmagic Portfolio" loading="lazy">
-          <div class="proj-img-overlay"></div>
-          <a href="https://zmmagic.vercel.app" target="_blank" class="proj-link">↗</a>
+          <img src="magic.jpg" alt="Zmmagic" loading="lazy">
+          <div class="proj-overlay"></div>
+          <a href="https://zmmagic.vercel.app" target="_blank" class="proj-visit">View Project ↗</a>
         </div>
-        <div class="proj-body">
-          <div class="proj-title">Zmmagic Portfolio</div>
+        <div class="proj-info">
+          <div class="proj-name">Zmmagic Portfolio</div>
           <div class="proj-desc">Aesthetic personal portfolio with strong visual identity and immersive experience.</div>
         </div>
       </div>
@@ -1114,15 +936,14 @@
 
 <!-- CONTACT -->
 <div class="wrap" id="contact">
-  <div class="divider"></div>
-  <section class="contact-section">
-    <div class="contact-inner">
-      <div class="section-label">Contact</div>
-      <h2 class="contact-tagline reveal">Let's Build Something <span>Legendary.</span></h2>
-      <p class="contact-sub reveal">Fullstack projects, Web3 builds, SaaS products, landing pages.<br>If you have a vision — I'll engineer it into reality.</p>
-      <div class="contact-btns reveal">
-        <a href="https://x.com/M18AD_" target="_blank" class="btn-primary">Message on X →</a>
-        <a href="https://discord.com/users/1243900160426246248" target="_blank" class="btn-outline">Discord</a>
+  <section style="padding-bottom:140px;">
+    <div class="contact-box reveal">
+      <div class="sec-label" style="justify-content:center; display:flex;">Contact</div>
+      <h2 class="contact-title">Let's Build Something<br><span>Legendary.</span></h2>
+      <p class="contact-sub">Fullstack projects, Web3 builds, SaaS products, landing pages. If you have a vision — I'll engineer it into reality.</p>
+      <div class="contact-btns">
+        <a href="https://x.com/M18AD_" target="_blank" class="btn-solid">Message on X</a>
+        <a href="https://discord.com/users/1243900160426246248" target="_blank" class="btn-ghost">Discord ↗</a>
       </div>
     </div>
   </section>
@@ -1133,222 +954,286 @@
   <span>Built with intention. Shipped with precision.</span>
 </footer>
 
+</div><!-- end .page -->
+
 <script>
-/* ─── THREE.JS SCENE ─── */
+/* ═══════════════════════════════════════
+   THREE.JS — SCROLL-REACTIVE 3D SCENE
+   Color shifts, geometry morphs, and
+   rotations all driven by scroll progress
+═══════════════════════════════════════ */
 (function() {
-  const canvas = document.getElementById('three-canvas');
+  const canvas = document.getElementById('bg-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0, 28);
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+  camera.position.set(0, 0, 30);
 
-  // Neon green color
-  const GREEN = 0x00ff41;
-  const GREEN2 = 0x39ff6e;
-
-  /* --- FLOATING WIREFRAME OBJECTS --- */
-  const objects = [];
-
-  function makeWireframe(geo, x, y, z, scale = 1) {
-    const mat = new THREE.MeshBasicMaterial({
-      color: GREEN,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.18,
-    });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(x, y, z);
-    mesh.scale.setScalar(scale);
-    scene.add(mesh);
-    return mesh;
+  // Color palette per scroll section
+  // 0 = neon green, 0.25 = cyan-ish, 0.5 = violet/purple, 0.75 = gold, 1 = back to green
+  function scrollColor(t) {
+    // interpolate through: green → teal → purple → amber → green
+    const stops = [
+      new THREE.Color(0x00ff41),   // 0.0  hero
+      new THREE.Color(0x00ffe0),   // 0.25 about
+      new THREE.Color(0x8b5cf6),   // 0.5  services
+      new THREE.Color(0xfbbf24),   // 0.75 work
+      new THREE.Color(0x00ff41),   // 1.0  contact
+    ];
+    const scaled = t * (stops.length - 1);
+    const idx = Math.floor(scaled);
+    const frac = scaled - idx;
+    const a = stops[Math.min(idx, stops.length - 1)];
+    const b = stops[Math.min(idx + 1, stops.length - 1)];
+    return a.clone().lerp(b, frac);
   }
 
-  // Icosahedron (hero area - large)
-  const ico = makeWireframe(new THREE.IcosahedronGeometry(5, 1), 14, 3, -8, 1);
+  // ── CENTRAL MORPH SPHERE ──
+  // We'll interpolate between sphere and icosahedron via vertex positions
+  const DETAIL = 3;
+  const sphereGeo = new THREE.SphereGeometry(5, 32, 32);
+  const icoGeo = new THREE.IcosahedronGeometry(5, DETAIL);
+  const torusGeo = new THREE.TorusGeometry(4.5, 1.4, 24, 64);
+  const octaGeo = new THREE.OctahedronGeometry(5, 2);
 
-  // Torus (right side)
-  const torus = makeWireframe(new THREE.TorusGeometry(3, 0.8, 16, 48), -16, 6, -12, 1);
-
-  // Octahedron
-  const octa = makeWireframe(new THREE.OctahedronGeometry(2.5), 18, -8, -6, 1);
-
-  // Small floating spheres (particles cluster)
-  const smallGeo = new THREE.SphereGeometry(0.08, 6, 6);
-  const smallMat = new THREE.MeshBasicMaterial({ color: GREEN, transparent: true, opacity: 0.7 });
-  const particles = [];
-
-  for (let i = 0; i < 120; i++) {
-    const m = new THREE.Mesh(smallGeo, smallMat.clone());
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI;
-    const r = 8 + Math.random() * 18;
-    m.position.set(
-      Math.sin(phi) * Math.cos(theta) * r,
-      Math.sin(phi) * Math.sin(theta) * r * 0.6,
-      Math.cos(phi) * r * 0.5 - 10
-    );
-    m.userData = {
-      speed: 0.0008 + Math.random() * 0.001,
-      offsetX: Math.random() * Math.PI * 2,
-      offsetY: Math.random() * Math.PI * 2,
-      amplitude: 0.3 + Math.random() * 0.5,
-      basePos: m.position.clone(),
-    };
-    scene.add(m);
-    particles.push(m);
-  }
-
-  /* --- GRID PLANE --- */
-  const gridHelper = new THREE.GridHelper(80, 30, 0x003310, 0x001a08);
-  gridHelper.position.y = -18;
-  gridHelper.position.z = -5;
-  scene.add(gridHelper);
-
-  /* --- CONNECTING LINES (constellation) --- */
-  const linePoints = [];
-  for (let i = 0; i < 20; i++) {
-    linePoints.push(new THREE.Vector3(
-      (Math.random() - 0.5) * 50,
-      (Math.random() - 0.5) * 30,
-      (Math.random() - 0.5) * 10 - 12
-    ));
-  }
-  const lineMat = new THREE.LineBasicMaterial({ color: GREEN, transparent: true, opacity: 0.06 });
-  for (let i = 0; i < linePoints.length - 1; i++) {
-    const geo = new THREE.BufferGeometry().setFromPoints([linePoints[i], linePoints[i+1]]);
-    scene.add(new THREE.Line(geo, lineMat));
-  }
-
-  /* --- MOUSE INFLUENCE --- */
-  let mouseX = 0, mouseY = 0;
-  let targetX = 0, targetY = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = -(e.clientY / window.innerHeight - 0.5) * 2;
+  // Collect vertex positions from each geo (we'll use SphereGeo as base mesh and morph UVs)
+  const morphMat = new THREE.MeshBasicMaterial({
+    color: 0x00ff41,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.22,
   });
 
-  /* --- RESIZE --- */
+  // We'll manually swap geometries per scroll milestone for dramatic effect
+  const geoSequence = [sphereGeo, icoGeo, torusGeo, octaGeo, icoGeo];
+  let currentGeoIdx = 0;
+  let morphMesh = new THREE.Mesh(sphereGeo, morphMat);
+  morphMesh.position.set(11, 1, -4);
+  scene.add(morphMesh);
+
+  // ── SECONDARY TORUS ──
+  const torus2Mat = new THREE.MeshBasicMaterial({
+    color: 0x00ff41, wireframe: true, transparent: true, opacity: 0.13
+  });
+  const torus2 = new THREE.Mesh(new THREE.TorusGeometry(3, 0.6, 12, 40), torus2Mat);
+  torus2.position.set(-13, 4, -8);
+  scene.add(torus2);
+
+  // ── THIRD SHAPE: Tetrahedron ──
+  const tet = new THREE.Mesh(
+    new THREE.TetrahedronGeometry(3, 2),
+    new THREE.MeshBasicMaterial({ color:0x00ff41, wireframe:true, transparent:true, opacity:0.14 })
+  );
+  tet.position.set(-14, -8, -6);
+  scene.add(tet);
+
+  // ── PARTICLES ──
+  const COUNT = 180;
+  const pPositions = new Float32Array(COUNT * 3);
+  const pBase = [];
+  for (let i = 0; i < COUNT; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const r = 10 + Math.random() * 20;
+    const x = r * Math.sin(phi) * Math.cos(theta);
+    const y = (r * Math.sin(phi) * Math.sin(theta)) * 0.55;
+    const z = r * Math.cos(phi) * 0.5 - 8;
+    pPositions[i*3]   = x;
+    pPositions[i*3+1] = y;
+    pPositions[i*3+2] = z;
+    pBase.push({ x, y, z,
+      sx: 0.0006 + Math.random()*0.001,
+      sy: 0.0005 + Math.random()*0.001,
+      ox: Math.random()*Math.PI*2,
+      oy: Math.random()*Math.PI*2,
+      amp: 0.3 + Math.random()*0.6
+    });
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0x00ff41, size: 0.12, transparent: true, opacity: 0.7 });
+  const points = new THREE.Points(pGeo, pMat);
+  scene.add(points);
+
+  // ── GRID ──
+  const grid = new THREE.GridHelper(100, 40, 0x001a08, 0x001208);
+  grid.position.set(0, -20, -5);
+  scene.add(grid);
+
+  // ── CONSTELLATION LINES ──
+  const linePts = Array.from({ length: 25 }, () =>
+    new THREE.Vector3((Math.random()-0.5)*60, (Math.random()-0.5)*35, (Math.random()-0.5)*12 - 12)
+  );
+  const lineMatC = new THREE.LineBasicMaterial({ color: 0x00ff41, transparent: true, opacity: 0.05 });
+  for (let i = 0; i < linePts.length - 1; i++) {
+    scene.add(new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([linePts[i], linePts[i+1]]),
+      lineMatC
+    ));
+  }
+
+  // ── SCROLL PROGRESS ──
+  let scrollProgress = 0;
+  let lastGeoSwap = -1;
+  let targetGeoIdx = 0;
+
+  window.addEventListener('scroll', () => {
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+
+    // Determine which geometry to show based on scroll
+    targetGeoIdx = Math.min(Math.floor(scrollProgress * geoSequence.length), geoSequence.length - 1);
+    if (targetGeoIdx !== lastGeoSwap) {
+      // Swap geometry with a "flash" effect
+      morphMesh.geometry = geoSequence[targetGeoIdx];
+      lastGeoSwap = targetGeoIdx;
+    }
+  });
+
+  // ── MOUSE ──
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 3;
+    my = -(e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // ── RESIZE ──
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  /* --- ANIMATE --- */
-  let clock = new THREE.Clock();
+  // ── RENDER LOOP ──
+  const clock = new THREE.Clock();
+  let prevColor = new THREE.Color(0x00ff41);
 
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
+    const sp = scrollProgress;
 
-    // Smooth camera drift
-    targetX += (mouseX * 2 - targetX) * 0.04;
-    targetY += (mouseY * 1 - targetY) * 0.04;
-    camera.position.x = targetX;
-    camera.position.y = targetY;
-    camera.lookAt(scene.position);
+    // Smooth camera follow mouse
+    tmx += (mx - tmx) * 0.04;
+    tmy += (my - tmy) * 0.04;
+    camera.position.x = tmx;
+    camera.position.y = tmy;
+    camera.lookAt(0, 0, 0);
 
-    // Rotate wireframes
-    ico.rotation.x = t * 0.12;
-    ico.rotation.y = t * 0.18;
-    ico.rotation.z = t * 0.07;
+    // Get scroll-based color
+    const col = scrollColor(sp);
+    prevColor.lerp(col, 0.025);
+    const c = prevColor;
 
-    torus.rotation.x = t * 0.08;
-    torus.rotation.y = t * 0.15;
-
-    octa.rotation.x = t * 0.2;
-    octa.rotation.y = t * 0.1;
-    octa.rotation.z = t * 0.15;
-
-    // Pulse opacity of wireframes
-    ico.material.opacity = 0.12 + 0.06 * Math.sin(t * 0.8);
-    torus.material.opacity = 0.10 + 0.05 * Math.sin(t * 0.6 + 1);
-
-    // Particle float
-    particles.forEach((p, i) => {
-      const d = p.userData;
-      p.position.x = d.basePos.x + Math.sin(t * d.speed * 1000 + d.offsetX) * d.amplitude;
-      p.position.y = d.basePos.y + Math.cos(t * d.speed * 800 + d.offsetY) * d.amplitude * 0.7;
-      p.material.opacity = 0.3 + 0.4 * Math.abs(Math.sin(t * d.speed * 500 + i));
+    // Apply color to all elements
+    morphMat.color.copy(c);
+    torus2Mat.color.copy(c);
+    tet.material.color.copy(c);
+    pMat.color.copy(c);
+    lineMatC.color.copy(c);
+    grid.material = new THREE.LineBasicMaterial({
+      color: c.clone().multiplyScalar(0.15),
+      transparent: true, opacity: 0.5
     });
+
+    // Opacity pulse
+    morphMat.opacity = 0.15 + 0.08 * Math.sin(t * 0.7) + sp * 0.1;
+    torus2Mat.opacity = 0.10 + 0.05 * Math.sin(t * 0.5 + 1);
+
+    // Rotation — speed changes with scroll
+    const speedBoost = 1 + sp * 2.5;
+    morphMesh.rotation.x = t * 0.10 * speedBoost;
+    morphMesh.rotation.y = t * 0.15 * speedBoost;
+    morphMesh.rotation.z = t * 0.06 * speedBoost;
+
+    // Scroll-driven position drift
+    morphMesh.position.y = 1 + Math.sin(t * 0.4) * 1.2 - sp * 6;
+    morphMesh.position.x = 11 - sp * 4;
+
+    torus2.rotation.x = t * 0.07 + sp * Math.PI;
+    torus2.rotation.y = t * 0.12 + sp * Math.PI * 0.5;
+
+    tet.rotation.x = t * 0.18 * speedBoost;
+    tet.rotation.y = t * 0.22 * speedBoost;
+    tet.position.y = -8 + sp * 5;
+
+    // Scale pulse on morphMesh
+    const scl = 1 + 0.03 * Math.sin(t * 1.2) + sp * 0.15;
+    morphMesh.scale.setScalar(scl);
+
+    // Grid scrolls up as user scrolls
+    grid.position.y = -20 + sp * 8;
+
+    // Animate particles
+    const pos = pGeo.attributes.position.array;
+    for (let i = 0; i < COUNT; i++) {
+      const d = pBase[i];
+      pos[i*3]   = d.x + Math.sin(t * d.sx * 1000 + d.ox) * d.amp * (1 + sp);
+      pos[i*3+1] = d.y + Math.cos(t * d.sy * 800 + d.oy) * d.amp * 0.7;
+      pos[i*3+2] = d.z + sp * 3;
+    }
+    pGeo.attributes.position.needsUpdate = true;
+
+    // Particle color and size change with scroll
+    pMat.size = 0.1 + sp * 0.18;
+    pMat.opacity = 0.5 + sp * 0.4;
 
     renderer.render(scene, camera);
   }
-
   animate();
 })();
 
-/* ─── CUSTOM CURSOR ─── */
-const curDot = document.getElementById('cur-dot');
-const curRing = document.getElementById('cur-ring');
-let cx = 0, cy = 0, rx = 0, ry = 0;
+/* ═══════════════════
+   CUSTOM CURSOR
+═══════════════════ */
+const outer = document.getElementById('cursor-outer');
+const inner = document.getElementById('cursor-inner');
+let ox=0, oy=0, ix=0, iy=0, tx=0, ty=0;
 
-document.addEventListener('mousemove', e => {
-  cx = e.clientX; cy = e.clientY;
-});
+document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
 
-(function animCursor() {
-  requestAnimationFrame(animCursor);
-  rx += (cx - rx) * 0.18;
-  ry += (cy - ry) * 0.18;
-  curDot.style.transform = `translate(${cx}px, ${cy}px)`;
-  curRing.style.transform = `translate(${rx}px, ${ry}px)`;
+(function cursorLoop() {
+  requestAnimationFrame(cursorLoop);
+  ix = tx; iy = ty;
+  ox += (tx - ox) * 0.14;
+  oy += (ty - oy) * 0.14;
+  inner.style.left = ix + 'px';
+  inner.style.top  = iy + 'px';
+  outer.style.left = ox + 'px';
+  outer.style.top  = oy + 'px';
 })();
 
-document.querySelectorAll('a, button, .tech-pill, .proj-card').forEach(el => {
-  el.addEventListener('mouseenter', () => curRing.querySelector('.cursor-ring').style.transform = 'translate(-50%,-50%) scale(1.8)');
-  el.addEventListener('mouseleave', () => curRing.querySelector('.cursor-ring').style.transform = 'translate(-50%,-50%) scale(1)');
+document.querySelectorAll('a, button, .tech-chip, .proj-card, .card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    outer.style.width = '60px';
+    outer.style.height = '60px';
+    outer.style.borderColor = 'var(--g)';
+  });
+  el.addEventListener('mouseleave', () => {
+    outer.style.width = '40px';
+    outer.style.height = '40px';
+    outer.style.borderColor = 'rgba(0,255,65,0.5)';
+  });
 });
 
-/* ─── SCROLL REVEAL ─── */
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+/* ═══════════════════
+   SCROLL REVEAL
+═══════════════════ */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')];
-      const delay = siblings.indexOf(entry.target) * 80;
-      setTimeout(() => entry.target.classList.add('visible'), delay);
+      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.on)')];
+      const delay = siblings.indexOf(entry.target) * 90;
+      setTimeout(() => entry.target.classList.add('on'), Math.max(0, delay));
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-/* ─── TYPED STATUS ─── */
-const statuses = [
-  'Shipping fullstack products at pace.',
-  'Available for Web3 projects.',
-  'Open to SaaS collaborations.',
-  'Building the whole stack, always.',
-];
-let si = 0, ci2 = 0, del = false;
-const statusEl = document.getElementById('typed-status');
-
-function typeStatus() {
-  const s = statuses[si];
-  if (!del) {
-    if (ci2 < s.length) {
-      statusEl.textContent = s.slice(0, ++ci2);
-      setTimeout(typeStatus, 45);
-    } else {
-      setTimeout(() => { del = true; typeStatus(); }, 2600);
-    }
-  } else {
-    if (ci2 > 0) {
-      statusEl.textContent = s.slice(0, --ci2);
-      setTimeout(typeStatus, 22);
-    } else {
-      del = false;
-      si = (si + 1) % statuses.length;
-      setTimeout(typeStatus, 400);
-    }
-  }
-}
-setTimeout(typeStatus, 1200);
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
